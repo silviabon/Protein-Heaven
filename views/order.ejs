@@ -42,30 +42,36 @@
           <span class="phone_number">555-5555</span>
         </div>
         <div class= "order_number_box">
-          <span>Order #: </span>
+          <span>Order # </span>
           <span class="order_number">23</span>
         </div>
       </header>
 
-      <div id="items">
-        <p>Items:</p>
-        <ol>
-          <!-- ajax will be needed here to dinamically populate the items list below:  -->
-          <li class="item">Miso soup</li>
-          <li class="item">edamames </li>
-          <li class="item">beans </li>
-        </ol>
-      </div>
+      <div id="container">
+        <div id="items">
+          <p>Items:</p>
+          <ol>
+            <!-- ajax will be needed here to dinamically populate the items list below:  -->
+            <li class="item">Miso soup</li>
+            <li class="item">edamames </li>
+            <li class="item">beans </li>
+          </ol>
+        </div>
 
-      <div id="actions">
-        <button id="delete">DELETE</button>
-        <form method="POST" action="/" id="submitEstimatedTime">
-          Estimated time: <input type="text" name="estimatedTime" value=" ">
-          <input type="submit" value="Submit">
-        </form>
+        <div id="actions">
+          <div id="deletion_box">
+            <button id="delete">DELETE</button>
+          </div>
+          <div id="timing">
+            <form method="POST" action="/" id="submitEstimatedTime">
+              Estimated time: <input type="text" name="estimatedTime" placeholder="ej.: 6:00">
+              <input id="submit_button" type="submit" value="Submit">
+            </form>
+          </div>
+        </div>
       </div>
-
       <footer>
+        <span>Total Items: </span>
         <span id="items_total">3</span>
       </footer>
     </section>
@@ -73,7 +79,7 @@
 
     <br>
     <div id="order_counting">
-      <span>Orders total: </span>
+      <span>Total Orders: </span>
       <span id="total">6</span>
     </div>
 
