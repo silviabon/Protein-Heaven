@@ -7,17 +7,14 @@ exports.seed = function(knex, Promise) {
         // Inserts seed entries
         knex('menu_items').insert({
           id: 1,
-          name: 'Fish',
           price: 12.99
         }),
         knex('menu_items').insert({
           id: 2,
-          name: 'Chicken',
           price: 15.99
         }),
         knex('menu_items').insert({
           id: 3,
-          name: 'Beef',
           price: 19.99
         })
       ]);
