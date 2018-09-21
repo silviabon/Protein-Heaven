@@ -43,6 +43,27 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+//Menu page
+app.get("/menu", (req, res) => {
+  res.render("menu");
+});
+
+// Confirmation page
+app.get("/confirmation", (req, res) => {
+  res.render("confirmation");
+});
+
+// Order list page
+app.get("/orderlist", (req, res) => {
+  res.render("orderlist");
+});
+
+// Order  page
+app.get("/order", (req, res) => {
+  res.render("order");
+});
+
+
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
 });
