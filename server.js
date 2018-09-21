@@ -85,7 +85,7 @@ app.post('/checkout_confirmation', (req, res) => {
 // and redirect user page too checkout
 
 
-  /*res.redirect('confirmationPage');*/
+  /*res.redirect('confirmationPage');*/i
 })
 
 // post for admin item list to correct item controls
