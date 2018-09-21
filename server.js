@@ -1,7 +1,7 @@
 "use strict";
 
 require('dotenv').config();
-const queries = require("../db_queries");
+/*const queries = require("../db_queries");*/ // delete?
 
 const PORT        = process.env.PORT || 8080;
 const ENV         = process.env.ENV || "development";
@@ -26,27 +26,27 @@ app.use(morgan('dev'));
 // Log knex SQL queries to STDOUT as well
 app.use(knexLogger(knex));
 
-/*app.set("view engine", "ejs");
+app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/styles", sass({
   src: __dirname + "/styles",
   dest: __dirname + "/public/styles",
   debug: true,
   outputStyle: 'expanded'
-}));*/
-/*app.use(express.static("public"));*/
+}));
+app.use(express.static("public"));
 
 // Mount all resource routes
-/*app.use("/api/users", usersRoutes(knex));*/
+app.use("/api/users", usersRoutes(knex));
 
 // gets
 // gets
 // gets
 // Home page
-/*app.get("/", (req, res) => {
-  res.render("index");
+app.get("/", (req, res) => {
+  res.render("menu");
 });
-*/
+
 
 // post
 // post
@@ -55,17 +55,16 @@ app.use("/styles", sass({
 app.post('/order_confirmation', (req, res) => {
   //take object taken from
   console.log("post request made")
-  res.redirect('confirmationPage');
+
+  /*res.redirect('confirmationPage');*/
 })
 
 
 
 
-queries.addToTable()
-
-/*app.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
-});*/
+});
 
 
 
