@@ -1,6 +1,8 @@
 "use strict";
 
 require('dotenv').config();
+//helpers
+const moment = require('moment');
 /*const queries = require("../db_queries");*/ // delete?
 
 const PORT        = process.env.PORT || 8080;
@@ -39,6 +41,9 @@ app.use(express.static("public"));
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));
 
+
+
+
 // gets
 // gets
 // gets
@@ -52,14 +57,46 @@ app.get("/", (req, res) => {
 // post
 // post
 
-app.post('/order_confirmation', (req, res) => {
-  //take object taken from
+app.post('/checkout_confirmation', (req, res) => {
+  let getdate = new Date();
+  let getTime = getdate.getTime();
+  // get items object from body
+  let itemCart = req.body[]
   console.log("post request made")
+// on checkout confirmation, create new order row
+   knex('orders')
+    .returning('id')
+    .insert({
+      status: true,
+      submit_date: getTime,
+      estimated_time: null,
+      user_id: 1 // change to cookie_session user equivlent
+
+
+    })
+    // order has been made populate users order
+    .then((items) => {
+      // make loop for items passed in checkout and insert into items orders table
+      console.log(rows)
+    }).catch(function(error) {
+      console.error(error)
+    });
+// select all with id of created then http response as proper
+// and redirect user page too checkout
+
 
   /*res.redirect('confirmationPage');*/
 })
 
+// post for admin item list to correct item controls
+   // code
+   // code
+   // code
 
+// post for admin specific item
+  // code
+  // code
+  // code
 
 
 app.listen(PORT, () => {
@@ -68,4 +105,10 @@ app.listen(PORT, () => {
 
 
 
+
+
+
+
 //post request to server with order quanities and type
+
+
