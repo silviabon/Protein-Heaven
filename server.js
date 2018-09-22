@@ -17,6 +17,10 @@ const knexLogger  = require('knex-logger');
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
 
+const {getMenuItems} =  require("./routes/items")(knex);
+const {getOrders} =     require("./routes/orders")(knex);
+
+
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
@@ -37,6 +41,9 @@ app.use(express.static("public"));
 
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));
+//app.use("/api/orders", ordersRoutes(knex)); //CHECK IF THIS IS RIGHT
+//app.use("/api/items", itemsRoutes(knex));   //CHECK IF THIS IS RIGHT
+
 
 // Home page
 app.get("/", (req, res) => {
@@ -45,23 +52,44 @@ app.get("/", (req, res) => {
 
 //Menu page
 app.get("/menu", (req, res) => {
-  res.render("menu");
+  getMenuItems()
+  .then((menuItems) => {
+    console.log("menu items: " + menuItems);
+    res.render("menu", {menuItems});
+  });
 });
 
-// Confirmation page
-app.get("/confirmation", (req, res) => {
-  res.render("confirmation");
+
+//submit order and go to confirmation page
+app.post("/menu", (req, res) => {
+  if(data){
+  //?? how to send this to database? ?????????
+  let id = req.session.order_id;
+  res.render("orderlist/::id/confirmation");
+  }else{
+    res.status(400).send("Error: ");
+  }
 });
+
+
+//Confirmation/status page
+app.get("/confirmation/::id", (req, res) => {
+  res.render("confirmation", order_id);
+});
+
 
 // Order list page
 app.get("/orderlist", (req, res) => {
-  res.render("orderlist");
+ // getOrders()
+ // .then((orders) => {
+  //  console.log("orders: " + orders);
+    res.render("orderlist");
+ // });
 });
+//make a query every second or so to update the page// set interval *******
 
-// Order  page
-app.get("/order", (req, res) => {
-  res.render("order");
-});
+
+
 
 
 app.listen(PORT, () => {
