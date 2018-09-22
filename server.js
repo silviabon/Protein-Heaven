@@ -43,12 +43,12 @@ app.use(express.static("public"));
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));
 
-const createOrderRow = function(items) {
+const createOrderRow = function(items, userId) {
   console.log("log from order Row")
   const date = new Date();
   const getTime = date.getTime();
-  //create new order row
-   knex('orders')
+
+   return knex('orders')
       .returning('id')
       .insert({
         status: true,
@@ -56,18 +56,16 @@ const createOrderRow = function(items) {
         estimated_time: null,
         user_id: 1 /*user*/ // change to cookie_session user equivlent
       })
-      // add items to new order row
       .then((orderId)=>{
+
         items.forEach(item => {
-          knex('orders_items')
-            .insert({
-              order_id: orderId[0],
-              item_id: item.id,
-              quantity: item.quantity
-            })/*.then((result)=>{
-              console.log("inserted in details ",result);
-            });*/
-        })
+        knex('orders_items')
+          .insert({
+            order_id: orderId[0],
+            item_id: item.id,
+            quantity: item.quantity
+          }).then()
+      })
       })
 
 };
@@ -103,10 +101,12 @@ const getOrders = function () {
     .from('orders')
     .join('orders_items', 'orders.id', '=', 'orders_items.order_id')
     .join('users', 'users.id', '=', 'orders.user_id')
-    .where('users.id', '=', 1 ).andWhere('orders.id', '=', 1)
+    .where('users.access_level', '=', 2 ).andWhere('orders.status', '=', true)
     /*.then()*/
     // add to most recently created order
 }
+
+
 
 const getUser = function () {
   return /*const userPromise =*/ knex.select('*').from('users')
@@ -133,13 +133,14 @@ app.get("/orderlist", (req, res) => {
   //make interval to ajax this the following every second
 
   // get table of orders
-  const getOrdersPromise = getOrders()
+  const getOrdersPromise = getOrders();
   // send orders to orderlist
   const ordersPromise = getOrdersPromise
-    .then((order) => {
+    ordersPromise.then((order) => {
+      console.log(order)
       const openOrders = {order}
+
       res.render("orderlist", openOrders);
-      res.status(200).json(order);
     })
 });
 
@@ -163,16 +164,14 @@ app.post('/checkout_confirmation', (req, res) => {
     {id:3, quantity: 2}
     ];
 
-  let testPromise = createOrderRow(items, userID);
-  console.log(testPromise);
-  testPromise.then((result)=>{
-    console.log("rohit ",result);
-  });
+  console.log("post request made");
+
 //on checkout confirmation, create new order row
-  const orderPromise = createOrderFromItems(items);
+  const orderPromise = createOrderRow(items);
   const ordersItemsPromise = orderPromise
     .then( (order) => {
-      console.log("from orderlist post", order)
+      //////////// undefined
+      console.log(order, "post 2")
       res.status(201).json(order);
       //re direct to confirmation page
     })
@@ -217,15 +216,15 @@ app.listen(PORT, () => {
 //post request to server with order quanities and type
 
 
-/*  SELECT orders.id, orders.status, orders.submit_date, orders.estimated_time, users.name,
+/*  SELECT orders.id, orders.submit_date, orders.estimated_time, users.name,
     users.phone_number, orders_items.item_id, orders_items.quantity
      FROM orders
      JOIN orders_items ON (orders.id=orders_items.order_id)
      JOIN users ON (users.id=orders.user_id)
-     WHERE users.id = 1 and orders.id = 1
-     GROUP BY orders.id;
-*/
+     WHERE users.access_level = 2 and orders.status = true;
 
+
+*/
 // need delete removes orders based off order ID
 
 
