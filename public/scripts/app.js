@@ -8,3 +8,9 @@ $(() => {
     }
   });
 });
+
+
+// get items from checkout array and push to server;
+
+
+//ajax query on set interval for page refresh
