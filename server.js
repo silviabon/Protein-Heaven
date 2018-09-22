@@ -65,10 +65,31 @@ const createOrderFromItems = function(items, user) {
       })
   }
 
-const createOrderItems = function(orders_id, checkOutItems) {
-    const items = checkOutItems;
-    return knex('order_items');
+const createOrderItems = function(orders_id) {
+    return knex('order_items')
   }
+
+const getOrders = function () {
+  return knex.select('orders.id', 'orders.status', 'orders.submit_date', 'orders.estimated_time',
+   'users.name', 'users.phone_number', 'orders_items.item_id', 'orders_items.quantity')
+    .from('orders')
+    .join('orders_items', 'orders.id', '=', 'orders_items.order_id')
+    .join('users', 'users.id', '=', 'orders.user_id')
+    .where('users.id', '=', 1 ).andWhere('orders.id', '=', 1)
+    /*.then()*/
+    // add to most recently created order
+}
+/*SELECT orders.id, orders.status, orders.submit_date, orders.estimated_time, users.name,
+  users.phone_number, orders_items.item_id, orders_items.quantity
+   FROM orders
+   JOIN orders_items ON (orders.id=orders_items.order_id)
+   JOIN users ON (users.id=orders.user_id)
+   WHERE users.id = 1 and orders.id = 1;*/
+
+const getUser = function () {
+  return /*const userPromise =*/ knex.select('*').from('users')
+    .where('users').where('id', 2 /*session cookie*/)
+}
 
 // gets
 // gets
@@ -87,7 +108,20 @@ app.get("/confirmation", (req, res) => {
 
 // Order list page
 app.get("/orderlist", (req, res) => {
-  res.render("orderlist");
+  //make interval to ajax this the following every second
+  //make interval to ajax this the following every second
+
+  // get table of most recent order
+  const getOrdersPromise = getOrders()
+  // get table for matching user to order
+  /*const userPromise = getUser()*/
+  /*Promise.all([currentOrderPromise, userPromise])*/
+  const ordersPromise = getOrdersPromise
+    .then((order) => {
+
+      const openOrders = {order}
+      res.render("orderlist", openOrders);
+    })
 });
 
 // Order  page
@@ -108,19 +142,20 @@ app.post('/checkout_confirmation', (req, res) => {
     {id:3, quantity: 1}
     ];
 
-
   console.log("post request made");
 // on checkout confirmation, create new order row
   const orderPromise = createOrderFromItems(items);
-    /*orderPromise
+  const ordersItemsPromise = orderPromise
     .then( (order) => {
+      console.log("from orderlist post", order)
       res.status(201).json(order);
+      //re direct to confirmation page
     })
     .catch(function(error) {
       console.error(error)
-    });*/
-
+    })
 })
+
 // select all with id of created then http response as proper
 // and redirect user page too checkout
 
@@ -140,6 +175,7 @@ app.post('/checkout_confirmation', (req, res) => {
 
 
 
+
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
 });
@@ -147,9 +183,38 @@ app.listen(PORT, () => {
 
 
 
-
+// return knex.select(*).from('orders')
+//     .join('orders_items', 'id', '=', 'orders_items.order_id')
+//     .where('order.id', 1 /*set dynamically as newest*/)
+//     .then( (orders) => {
+//       return knex.select(*).from(orders)
+//         .where('users', 'id', '=', 'orders.user_id')
+//         .where('users.id', 1)
+//     })
 
 
 //post request to server with order quanities and type
 
 
+/*  SELECT orders.id, orders.status, orders.submit_date, orders.estimated_time, users.name,
+    users.phone_number, orders_items.item_id, orders_items.quantity
+     FROM orders
+     JOIN orders_items ON (orders.id=orders_items.order_id)
+     JOIN users ON (users.id=orders.user_id)
+     WHERE users.id = 1 and orders.id = 1
+     GROUP BY orders.id;
+*/
+
+// need delete removes orders based off order ID
+
+
+/*select * from orders
+  join users on (users.id=orders.user_id)
+  where users.id = 1;
+Select * from orders_items
+  join menu_items on (menu_items.id=orders_items.item_id)
+  join order.menu_item */
+
+
+
+// set user as global var so it can be passed and pulled.
