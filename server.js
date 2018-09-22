@@ -37,17 +37,18 @@ app.use("/styles", sass({
   debug: true,
   outputStyle: 'expanded'
 }));
+
 app.use(express.static("public"));
 
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));
 
- const createOrderRow = function(user) {
-    console.log("log from order Row")
-    const date = new Date();
-    const getTime = date.getTime();
-
-    return knex('orders')
+const createOrderRow = function(items) {
+  console.log("log from order Row")
+  const date = new Date();
+  const getTime = date.getTime();
+  //create new order row
+   knex('orders')
       .returning('id')
       .insert({
         status: true,
@@ -55,19 +56,46 @@ app.use("/api/users", usersRoutes(knex));
         estimated_time: null,
         user_id: 1 /*user*/ // change to cookie_session user equivlent
       })
-  };
-const createOrderFromItems = function(items, user) {
-  console.log("log from OrderItems")
-    const orderPromise = createOrderRow()
-    const orderItems = orderPromise
-    .then( (order) => {
-        return createOrderItems(order.id, items)
+      // add items to new order row
+      .then((orderId)=>{
+        items.forEach(item => {
+          knex('orders_items')
+            .insert({
+              order_id: orderId[0],
+              item_id: item.id,
+              quantity: item.quantity
+            })/*.then((result)=>{
+              console.log("inserted in details ",result);
+            });*/
+        })
       })
-  }
 
-const createOrderItems = function(orders_id) {
-    return knex('order_items')
-  }
+};
+
+/*const createOrderFromItems = function(items, user) {
+
+  const orderPromise = createOrderRow();
+  const orderItems = orderPromise
+    .then( (order) => {
+      console.log("ORDER WAS CREATED ",order)
+      //first send to get page
+      createOrderItems(order.id, items)
+      console.log("after order items");
+    })
+  }*/
+
+/*const createOrderItems = function(orderId, items) {
+  console.log("from createOrderItems")
+  items.forEach(item => {
+    knex('orders_items')
+      .insert({
+        order_id: orderId,
+        item_id: item.id,
+        quantity: item.quantity
+      })
+  })
+}*/
+
 
 const getOrders = function () {
   return knex.select('orders.id', 'orders.status', 'orders.submit_date', 'orders.estimated_time',
@@ -79,12 +107,6 @@ const getOrders = function () {
     /*.then()*/
     // add to most recently created order
 }
-/*SELECT orders.id, orders.status, orders.submit_date, orders.estimated_time, users.name,
-  users.phone_number, orders_items.item_id, orders_items.quantity
-   FROM orders
-   JOIN orders_items ON (orders.id=orders_items.order_id)
-   JOIN users ON (users.id=orders.user_id)
-   WHERE users.id = 1 and orders.id = 1;*/
 
 const getUser = function () {
   return /*const userPromise =*/ knex.select('*').from('users')
@@ -109,18 +131,15 @@ app.get("/confirmation", (req, res) => {
 // Order list page
 app.get("/orderlist", (req, res) => {
   //make interval to ajax this the following every second
-  //make interval to ajax this the following every second
 
-  // get table of most recent order
+  // get table of orders
   const getOrdersPromise = getOrders()
-  // get table for matching user to order
-  /*const userPromise = getUser()*/
-  /*Promise.all([currentOrderPromise, userPromise])*/
+  // send orders to orderlist
   const ordersPromise = getOrdersPromise
     .then((order) => {
-
       const openOrders = {order}
       res.render("orderlist", openOrders);
+      res.status(200).json(order);
     })
 });
 
@@ -136,14 +155,20 @@ app.get("/order", (req, res) => {
 // upon checkout, create now order an
 app.post('/checkout_confirmation', (req, res) => {
   // get items object from body
+  /*Select
+  req.body['items']*/
   const items = [
-    {id: 1, quantity: 2},
-    {id: 2, quantity: 2},
-    {id:3, quantity: 1}
+    {id: 1, quantity: 1},
+    {id: 2, quantity: 1},
+    {id:3, quantity: 2}
     ];
 
-  console.log("post request made");
-// on checkout confirmation, create new order row
+  let testPromise = createOrderRow(items, userID);
+  console.log(testPromise);
+  testPromise.then((result)=>{
+    console.log("rohit ",result);
+  });
+//on checkout confirmation, create new order row
   const orderPromise = createOrderFromItems(items);
   const ordersItemsPromise = orderPromise
     .then( (order) => {
@@ -174,13 +199,9 @@ app.post('/checkout_confirmation', (req, res) => {
   // code
 
 
-
-
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
 });
-
-
 
 
 // return knex.select(*).from('orders')
