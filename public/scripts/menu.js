@@ -1,25 +1,6 @@
 $( document ).ready(function() {
 
-  const items = [
-     1 = {
-        name: "chicken",
-        description: "some juicy thing",
-        price: "$8.99"
-        //img_url:
-        },
-     2 = {
-       name: "beef",
-       description: "well done or blue rare?",
-       price: "$15.99"
-      //img_url:
-        },
-     3 = {
-       name: "fish",
-       description: "some floppy thing",
-       price: "$12.99"
-       //img_url:
-        }
-    ]
+  let checkOutArr = {};
 
   function renderMenu(items) {
     $('order_ind').empty();
@@ -28,7 +9,7 @@ $( document ).ready(function() {
       // takes return value and appends it to the tweets container
       let $order = createOrder(order);
       $('order_ind').append($order);
-  },
+  }
 
   function createOrderElement(orderData){
 
@@ -70,7 +51,23 @@ $( document ).ready(function() {
     var $itemsTotal = $("<span>").addClass("items_total").text(order.itemCount);
 
     return $order;
-    }
+  }
+
+  // move to top
+  // move to top
+
+  $('.form-group').submit( function(event) {
+    console.log("test")
+    let targetForm = event.target;
+    let itemId = $(this).data("id");
+    console.log(itemId);
+    let quantity =  $(this).find('option:selected').val();
+    console.log(quantity)
+   })
 
 
+
+});
+
+console.log("test")
     //standard value of item empty
