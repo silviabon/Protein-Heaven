@@ -15,7 +15,6 @@
   width: 100%;
   text-align: center;
   color: #000;
-  font-family: Oldtown, fantasy;
 }
 
 .caption span.words {
@@ -27,4 +26,11 @@
   border: 10px solid saddlebrown;
 }
 
+a {
+  color: white
+}
+
+a:active {
+  background-color: black;
+}
 
