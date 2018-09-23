@@ -6,6 +6,13 @@ const moment = require('moment');
 /*const dataHelpers = require('./dataHelpers');*/
 /*const queries = require("../db_queries");*/ // delete?
 
+var twilio = require('twilio');
+
+var accountSid = 'AC54c3c9051aaadd35ed5b77558e27b64c';
+var authToken = 'ebcbcd8f0b14259679ff225c420adb84';
+
+var client = require('twilio')(accountSid, authToken);
+
 const PORT        = process.env.PORT || 8080;
 const ENV         = process.env.ENV || "development";
 const express     = require("express");
@@ -20,6 +27,10 @@ const knexLogger  = require('knex-logger');
 
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
+
+const {getMenuItems} =  require("./routes/items")(knex);
+//const {getOrders} =     require("./routes/orders")(knex);
+
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
@@ -42,6 +53,9 @@ app.use(express.static("public"));
 
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));
+//app.use("/api/orders", ordersRoutes(knex)); //CHECK IF THIS IS RIGHT
+//app.use("/api/items", itemsRoutes(knex));   //CHECK IF THIS IS RIGHT
+
 
 const createOrderRow = function(items, userId) {
   console.log("log from order Row")
@@ -120,16 +134,35 @@ const getUser = function () {
 
 //Menu page
 app.get("/menu", (req, res) => {
-  res.render("menu");
+  getMenuItems()
+  .then((menuItems) => {
+    console.log("menu items: " + menuItems);
+    res.render("menu", {menuItems});
+  });
 });
 
-// Confirmation page
-app.get("/confirmation", (req, res) => {
-  res.render("confirmation");
+
+//submit order and go to confirmation page
+app.post("/menu", (req, res) => {
+  if(data){
+  //?? how to send this to database? ?????????
+  let id = req.session.order_id;
+  res.render("orderlist/::id/confirmation");
+  }else{
+    res.status(400).send("Error: ");
+  }
 });
+
+
+//Confirmation/status page
+app.get("/confirmation/::id", (req, res) => {
+  res.render("confirmation", order_id);
+});
+
 
 // Order list page
 app.get("/orderlist", (req, res) => {
+
   //make interval to ajax this the following every second
 
   // get table of orders
@@ -142,22 +175,10 @@ app.get("/orderlist", (req, res) => {
 
       res.render("orderlist", openOrders);
     })
+
 });
 
-// Order  page
-app.get("/order", (req, res) => {
-  res.render("order");
-});
-
-// post
-// post
-// post
-
-// upon checkout, create now order an
 app.post('/checkout_confirmation', (req, res) => {
-  // get items object from body
-  /*Select
-  req.body['items']*/
   const items = [
     {id: 1, quantity: 1},
     {id: 2, quantity: 1},
@@ -165,8 +186,6 @@ app.post('/checkout_confirmation', (req, res) => {
     ];
 
   console.log("post request made");
-
-//on checkout confirmation, create new order row
   const orderPromise = createOrderRow(items);
   const ordersItemsPromise = orderPromise
     .then( (order) => {
@@ -238,3 +257,25 @@ Select * from orders_items
 
 
 // set user as global var so it can be passed and pulled.
+
+//need to do an ajax get on checkout button
+app.get("/orderlist", (res, req) => {
+
+  client.messages.create({
+    body: "Your order was received, please check the website for an estimated time!",
+    to: '+16047288182',
+    from: '+16043595931'
+    })
+  .then((message) => console.log(message.sid));
+  })
+  
+  app.get("/menu", (res, req) => {
+  
+  client.messages.create({
+    body: "You have an order!",
+    to: '+16044013161',
+    from: '+16043595931'
+    })
+  .then((message) => console.log(message.sid));
+  }) 
+  
