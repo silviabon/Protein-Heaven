@@ -6,22 +6,22 @@ $( document ).ready(function() {
         description: "some juicy thing",
         price: "$8.99" 
         //img_url: 
-    },
+        },
      2 = {
        name: "beef",
        description: "well done or blue rare?",
        price: "$15.99"
       //img_url:
-     },
+        },
      3 = {
        name: "fish",
        description: "some floppy thing",
        price: "$12.99"
        //img_url:
-     }
-]
+        }
+    ]
 
-  function renderOrder(order) {
+  function renderMenu(items) {
     $('order_ind').empty();
     // loops through tweets
       // calls createTweetElement for each tweet
@@ -71,3 +71,6 @@ $( document ).ready(function() {
 
     return $order;
     })
+
+
+    //standard value of item empty

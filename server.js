@@ -136,25 +136,11 @@ app.get("/order", (req, res) => {
 // upon checkout, create now order an
 app.post('/checkout_confirmation', (req, res) => {
   // get items object from body
-<<<<<<< HEAD
-  let itemCart = req.body()
-  console.log("post request made")
-// on checkout confirmation, create new order row
-   knex('orders')
-    .returning('id')
-    .insert({
-      status: true,
-      submit_date: getTime,
-      estimated_time: null,
-      user_id: 1 // change to cookie_session user equivlent
-
-=======
   const items = [
     {id: 1, quantity: 2},
     {id: 2, quantity: 2},
     {id:3, quantity: 1}
     ];
->>>>>>> 405b8ccabf84b53a4b32dbb8463c160f4eeddaea
 
   console.log("post request made");
 // on checkout confirmation, create new order row
@@ -186,11 +172,6 @@ app.post('/checkout_confirmation', (req, res) => {
   // code
   // code
   // code
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 405b8ccabf84b53a4b32dbb8463c160f4eeddaea
 
 
 app.listen(PORT, () => {
@@ -212,8 +193,6 @@ app.listen(PORT, () => {
 
 //post request to server with order quanities and type
 
-<<<<<<< HEAD
-=======
 
 /*  SELECT orders.id, orders.status, orders.submit_date, orders.estimated_time, users.name,
     users.phone_number, orders_items.item_id, orders_items.quantity
@@ -237,4 +216,3 @@ Select * from orders_items
 
 
 // set user as global var so it can be passed and pulled.
->>>>>>> 405b8ccabf84b53a4b32dbb8463c160f4eeddaea
