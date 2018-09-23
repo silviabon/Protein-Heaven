@@ -6,6 +6,7 @@ const moment = require('moment');
 /*const dataHelpers = require('./dataHelpers');*/
 /*const queries = require("../db_queries");*/ // delete?
 
+
 const PORT        = process.env.PORT || 8080;
 const ENV         = process.env.ENV || "development";
 const express     = require("express");
@@ -43,6 +44,9 @@ app.use(express.static("public"));
 
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));
+//app.use("/api/orders", ordersRoutes(knex)); //CHECK IF THIS IS RIGHT
+//app.use("/api/items", itemsRoutes(knex));   //CHECK IF THIS IS RIGHT
+
 
 const createOrderRow = function(items, userId) {
   console.log("log from order Row")
@@ -57,11 +61,10 @@ const createOrderRow = function(items, userId) {
         estimated_time: null,
         user_id: 1 /*user*/ // change to cookie_session user equivlent
       })
-      .then( (orderId )=> {
-         items.forEach(item => {
-          console.log(orderId)
-          console.log(item, "order row items")
-        knex('orders_items')
+
+      .then((orderId)=>{
+        items.forEach(item => {
+        knex('order_items')
           .insert({
             order_id: orderId[0],
             item_id: item.id,
@@ -105,9 +108,9 @@ const createOrderRow = function(items, userId) {
 
 const getOrders = function () {
   return knex.select('orders.id', 'orders.status', 'orders.submit_date', 'orders.estimated_time',
-   'users.name', 'users.phone_number', 'orders_items.item_id', 'orders_items.quantity')
+   'users.name', 'users.phone_number', 'order_items.item_id', 'order_items.quantity')
     .from('orders')
-    .join('orders_items', 'orders.id', '=', 'orders_items.order_id')
+    .join('order_items', 'orders.id', '=', 'order_items.order_id')
     .join('users', 'users.id', '=', 'orders.user_id')
     .where('users.access_level', '=', 2 ).andWhere('orders.status', '=', true)
     /*.then()*/
@@ -128,16 +131,35 @@ const getUser = function () {
 
 //Menu page
 app.get("/menu", (req, res) => {
-  res.render("menu");
+  //getMenuItems()
+  //.then((menuItems) => {
+    //console.log("menu items: " + menuItems);
+    res.render("menu");
+  //});
 });
 
-// Confirmation page
-app.get("/confirmation", (req, res) => {
+
+//submit order and go to confirmation page
+// app.post("/menu", (req, res) => {
+//   if(data){
+//   //?? how to send this to database? ?????????
+//   let id = req.session.order_id;
+//   res.render("orderlist/::id/confirmation");
+//   }else{
+//     res.status(400).send("Error: ");
+//   }
+// });
+
+
+//Confirmation/status page
+app.get("/confirmation/::id", (req, res) => {
   res.render("confirmation");
 });
 
+
 // Order list page
 app.get("/orderlist", (req, res) => {
+
   //make interval to ajax this the following every second
 
   // get table of orders
@@ -150,26 +172,23 @@ app.get("/orderlist", (req, res) => {
 
       res.render("orderlist", openOrders);
     })
-});
 
-// Order  page
+});
+//make a query every second or so to update the page// set interval *******
+
+//delete later, only for testing purposes:
 app.get("/order", (req, res) => {
   res.render("order");
 });
 
-// post
-// post
-// post
 
-// upon checkout, create now order an
 app.post('/checkout_confirmation', (req, res) => {
+
   // get items object from body
 
   const checkOutItems = req.body;
   const items = checkOutItems;
 
-
-//on checkout confirmation, create new order row
   const orderPromise = createOrderRow(items);
   const ordersItemsPromise = orderPromise
     .then( (order) => {
@@ -241,3 +260,25 @@ Select * from orders_items
 
 
 // set user as global var so it can be passed and pulled.
+
+//need to do an ajax get on checkout button
+app.get("/orderlist", (res, req) => {
+
+  client.messages.create({
+    body: "Your order was received, please check the website for an estimated time!",
+    to: '+16047288182',
+    from: '+16043595931'
+    })
+  .then((message) => console.log(message.sid));
+  })
+
+  app.get("/menu", (res, req) => {
+
+  client.messages.create({
+    body: "You have an order!",
+    to: '+16044013161',
+    from: '+16043595931'
+    })
+  .then((message) => console.log(message.sid));
+  })
+

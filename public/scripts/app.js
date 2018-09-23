@@ -1,4 +1,4 @@
-$(() => {
+/*$(() => {
   $.ajax({
     method: "GET",
     url: "/api/users"
@@ -6,8 +6,8 @@ $(() => {
     for(user of users) {
       $("<div>").text(user.name).appendTo($("body"));
     }
-  });;
-});
+  });
+});*/
 
 
 // get items from checkout array and push to server;
