@@ -116,17 +116,16 @@ const getOrders = function () {
     // add to most recently created order
 }
 
-
-
 const getUser = function () {
   return /*const userPromise =*/ knex.select('*').from('users')
     .where('users').where('id', 2 /*session cookie*/)
 }
 
-// gets
-// gets
-// gets
 // Home page
+app.get("/", (req, res) => {
+  res.render("index");
+})
+
 
 //Menu page
 app.get("/menu", (req, res) => {
@@ -139,15 +138,15 @@ app.get("/menu", (req, res) => {
 
 
 //submit order and go to confirmation page
-// app.post("/menu", (req, res) => {
-//   if(data){
-//   //?? how to send this to database? ?????????
-//   let id = req.session.order_id;
-//   res.render("orderlist/::id/confirmation");
-//   }else{
-//     res.status(400).send("Error: ");
-//   }
-// });
+app.post("/menu", (req, res) => {
+  if(data){
+  //?? how to send this to database? ?????????
+  let id = req.session.order_id;
+  res.render("orderlist/::id/confirmation");
+  }else{
+    res.status(400).send("Error: ");
+  }
+});
 
 
 //Confirmation/status page
