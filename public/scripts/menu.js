@@ -1,6 +1,7 @@
-$( document ).ready(function() {
+let checkOutStaging = [];
 
-  let checkOutArr = {};
+
+$( document ).ready(function() {
 
   function renderMenu(items) {
     $('order_ind').empty();
@@ -56,18 +57,57 @@ $( document ).ready(function() {
   // move to top
   // move to top
 
-  $('.form-group').submit( function(event) {
-    console.log("test")
-    let targetForm = event.target;
-    let itemId = $(this).data("id");
-    console.log(itemId);
-    let quantity =  $(this).find('option:selected').val();
-    console.log(quantity)
-   })
+
+
+  // pull values from menu tiles submit
+  $('.btn.btn-primary').click( function() {
+    let itemId = $(this).parent().data("id");
+    console.log(itemId)
+    let itemQuantity =  $(this).parent().find('option:selected').val();
+    let newCheckOutItem = {id: itemId, quantity: itemQuantity};
+
+    // array is empty push
+    if(checkOutStaging.length < 1) {
+      checkOutStaging.push(newCheckOutItem);
+
+    } else {
+      //loop through array and if item is the same, change item quanity
+      let itemAdded;
+      for (let i = 0; i < checkOutStaging.length; i++) {
+        if (checkOutStaging[i]["id"] === itemId) {
+          checkOutStaging[i]["quantity"] = itemQuantity;
+          itemAdded = true;
+          break;
+        }
+      }
+      // if item neeed to be changed, don't push new item
+      if (!itemAdded) {
+      checkOutStaging.push(newCheckOutItem);
+      console.log(checkOutStaging)
+      }
+      itemAdded = false;
+    }
+
+  });
+
+
+
+    /*for (var item in checkOutStaging) {
+      // check to see if item exists in staging array
+      if (!checkOutStaging[item]) {
+        checkOutStaging.push(newCheckOutItem);
+        console.log(checkOutStaging)
+      }
+      else if(checkOutStaging[item]['id'] !== itemId) {
+        checkOutStaging.push(newCheckOutItem);
+        console.log(checkOutStaging)
+      }
+    }
+*/
 
 
 
 });
 
-console.log("test")
+
     //standard value of item empty
