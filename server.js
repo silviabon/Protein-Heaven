@@ -26,6 +26,7 @@ const usersRoutes = require("./routes/users");
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
 app.use(morgan('dev'));
 
+app.use(bodyParser.json())
 // Log knex SQL queries to STDOUT as well
 app.use(knexLogger(knex));
 
@@ -56,19 +57,26 @@ const createOrderRow = function(items, userId) {
         estimated_time: null,
         user_id: 1 /*user*/ // change to cookie_session user equivlent
       })
-      .then((orderId)=>{
-
-        items.forEach(item => {
+      .then( (orderId )=> {
+         items.forEach(item => {
+          console.log(orderId)
+          console.log(item, "order row items")
         knex('orders_items')
           .insert({
             order_id: orderId[0],
             item_id: item.id,
             quantity: item.quantity
-          }).then()
-      })
+          }).then( (rows) => {
+            return rows;
+          }).catch(function(err) {
+             return error;
+          })
+
       })
 
-};
+  })
+}
+
 
 /*const createOrderFromItems = function(items, user) {
 
@@ -156,22 +164,17 @@ app.get("/order", (req, res) => {
 // upon checkout, create now order an
 app.post('/checkout_confirmation', (req, res) => {
   // get items object from body
-  /*Select
-  req.body['items']*/
-  const items = [
-    {id: 1, quantity: 1},
-    {id: 2, quantity: 1},
-    {id:3, quantity: 2}
-    ];
 
-  console.log("post request made");
+  const checkOutItems = req.body;
+  const items = checkOutItems;
+
 
 //on checkout confirmation, create new order row
   const orderPromise = createOrderRow(items);
   const ordersItemsPromise = orderPromise
     .then( (order) => {
+      console.log(order, "in order then");
       //////////// undefined
-      console.log(order, "post 2")
       res.status(201).json(order);
       //re direct to confirmation page
     })

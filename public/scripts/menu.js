@@ -71,7 +71,7 @@ $( document ).ready(function() {
       checkOutStaging.push(newCheckOutItem);
 
     } else {
-      //loop through array and if item is the same, change item quanity
+      //loop through array and if item is the same, change item quantity instead of new item
       let itemAdded;
       for (let i = 0; i < checkOutStaging.length; i++) {
         if (checkOutStaging[i]["id"] === itemId) {
@@ -83,27 +83,30 @@ $( document ).ready(function() {
       // if item neeed to be changed, don't push new item
       if (!itemAdded) {
       checkOutStaging.push(newCheckOutItem);
-      console.log(checkOutStaging)
       }
       itemAdded = false;
     }
 
   });
+  // on checkout button click, send objects array to server
+   $('#checkoutBtn').on('click', function () {
+    console.log('Button clicked, performing ajax call...');
 
+    var test = JSON.stringify(checkOutStaging)
+    console.log(checkOutStaging)
 
+    $.ajax('/checkout_confirmation', {
+        method: 'POST',
+        contentType: 'application/json',
+        data: test
+      })
+        .then(function () {
+          checkOutStaging = [];
+          //clear all chilcren out of checkout
+          /*$('checkout').val("");*/
+        });
 
-    /*for (var item in checkOutStaging) {
-      // check to see if item exists in staging array
-      if (!checkOutStaging[item]) {
-        checkOutStaging.push(newCheckOutItem);
-        console.log(checkOutStaging)
-      }
-      else if(checkOutStaging[item]['id'] !== itemId) {
-        checkOutStaging.push(newCheckOutItem);
-        console.log(checkOutStaging)
-      }
-    }
-*/
+  });
 
 
 
