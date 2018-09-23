@@ -11,7 +11,7 @@ module.exports = (knex) => {
   const dataHelper = dataHelperMaker;
   const router  = express.Router();
 
-  router.get("/menu", (req, res) => {
+  router.get("/", (req, res) => {
     dataHelper.getItems()
       .then(items => {
         res.json(items);

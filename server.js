@@ -20,8 +20,8 @@ const knexLogger  = require('knex-logger');
 
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
-
-//const {getMenuItems} =  require("./routes/items")(knex);
+const ordersRoutes = require("./routes/orders");
+const itemsRoutes =  require("./routes/items");
 //const {getOrders} =     require("./routes/orders")(knex);
 
 
@@ -46,8 +46,8 @@ app.use(express.static("public"));
 
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));
-//app.use("/api/orders", ordersRoutes(knex)); //CHECK IF THIS IS RIGHT
-//app.use("/api/items", itemsRoutes(knex));   //CHECK IF THIS IS RIGHT
+app.use("/api/orders", ordersRoutes(knex)); //CHECK IF THIS IS RIGHT
+app.use("/api/items", itemsRoutes(knex));   //CHECK IF THIS IS RIGHT
 
 
 const createOrderRow = function(items, userId) {
@@ -77,6 +77,7 @@ const createOrderRow = function(items, userId) {
 
 };
 
+
 /*const createOrderFromItems = function(items, user) {
 
   const orderPromise = createOrderRow();
@@ -102,16 +103,16 @@ const createOrderRow = function(items, userId) {
 }*/
 
 
-const getOrders = function () {
-  return knex.select('orders.id', 'orders.status', 'orders.submit_date', 'orders.estimated_time',
-   'users.name', 'users.phone_number', 'orders_items.item_id', 'orders_items.quantity')
-    .from('orders')
-    .join('orders_items', 'orders.id', '=', 'orders_items.order_id')
-    .join('users', 'users.id', '=', 'orders.user_id')
-    .where('users.access_level', '=', 2 ).andWhere('orders.status', '=', true)
-    /*.then()*/
-    // add to most recently created order
-}
+// const getOrders = function () {
+//   return knex.select('orders.id', 'orders.status', 'orders.submit_date', 'orders.estimated_time',
+//    'users.name', 'users.phone_number', 'orders_items.item_id', 'orders_items.quantity')
+//     .from('orders')
+//     .join('orders_items', 'orders.id', '=', 'orders_items.order_id')
+//     .join('users', 'users.id', '=', 'orders.user_id')
+//     .where('users.access_level', '=', 2 ).andWhere('orders.status', '=', true)
+//     /*.then()*/
+//     // add to most recently created order
+// }
 
 
 
@@ -153,29 +154,29 @@ app.get("/confirmation/::id", (req, res) => {
 });
 
 
-// Order list page
+//Order list page
 app.get("/orderlist", (req, res) => {
 
   //make interval to ajax this the following every second
 
-  // get table of orders
-  const getOrdersPromise = getOrders();
-  // send orders to orderlist
-  const ordersPromise = getOrdersPromise
-    ordersPromise.then((order) => {
-      console.log(order)
-      const openOrders = {order}
+  // // get table of orders
+  // const getOrdersPromise = getOrders();
+  // // send orders to orderlist
+  // const ordersPromise = getOrdersPromise;
+  //   ordersPromise.then((order) => {
+  //     console.log(order);
+  //     const openOrders = order;
+  //     //console.log("this is the object that is passed:", openOrders);
+      res.render("orderlist");
+  //   });
 
-      res.render("orderlist", openOrders);
-    })
-
-});
+ });
 //make a query every second or so to update the page// set interval *******
 
-//delete later, only for testing purposes:
-app.get("/order", (req, res) => {
-  res.render("order");
-});
+
+// app.get("/orderlist", (req, res) => {
+//   res.render("orderlist");
+// });
 
 
 // post
