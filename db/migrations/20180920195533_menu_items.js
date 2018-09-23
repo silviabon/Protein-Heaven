@@ -4,6 +4,8 @@ exports.up = function(knex, Promise) {
     t.increments('id').primary();
     t.string('name');
     t.decimal('price');
+    t.string('description');
+    t.string('urlPath');
   })
 };
 
