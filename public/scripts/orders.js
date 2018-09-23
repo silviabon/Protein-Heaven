@@ -1,10 +1,7 @@
 
 $(document).ready(function() {
-  console.log("Im in the orders script after doc is ready");
 
-
-
-  const order =
+  const order =[
       {
         id: "1",
         username: "Alice",
@@ -18,40 +15,26 @@ $(document).ready(function() {
                   {name: "Beef", quantity: 2}
     ],
         itemCount: 3
-      }
-
-
+      }];
 
 
 
   function renderOrders(orders) {
-      $('orders').empty();
-      console.log(orders);
+      $('.orders').empty();
       // loops through orders
         // calls createOrderElement for each order
         // takes return value and appends it to the orders container
         for(i in orders){
         let $order = createOrderElement(orders[i]);
-        $('orders').append($order);
+        $('.orders').append($order);
       }
     }
 
 
-
-    // function renderOrders(orders) {
-    //   $('order_ind').empty();
-    //   // loops through tweets
-    //     // calls createTweetElement for each tweet
-    //     // takes return value and appends it to the tweets container
-    //     for(i in orders){
-    //     let $order = createOrderElement(orders[i]);
-    //     $('order_ind').append($order);
-    //   }
-    // }
-
     function createOrderElement(order){
 
       var $order = $("<section>").addClass("order_kitchen");
+
 
       var $header = $("<header>")
 
@@ -80,10 +63,13 @@ $(document).ready(function() {
 
 
 
-      order.items.forEach(function(i){
-        var $item = $("<li>").addClass("item").text(`(${i.quantity}) - ${i.name}`);
-        $list.append($item);
-      });
+      // order.items.forEach(function(i){
+      //   var $item = $("<li>").addClass("item").text(`(${i.quantity}) - ${i.name}`);
+      //   $list.append($item);
+      // });
+      var $item = $("<li>").addClass("item").text("one food item");
+      $list.append($item);
+
 
       $items.append($par).append($list);
       $container.append($items);
@@ -95,18 +81,21 @@ $(document).ready(function() {
 
       var $timing = $("<div>").addClass("timing");
       var $submitTimeForm = $("<form>").addClass("submitEstimatedTime").attr("method", "POST").attr("action", "/orderlist").text("Estimated time: ");
-      var $inputTime = $("<input>").atrr("type", "text").attr("name", "estimatedTime").attr("placeholder", "e.g.: 6:00 PM");
+      var $inputTime = $("<input>").attr("type", "text").attr("name", "estimatedTime").attr("placeholder", "e.g.: 6:00 PM");
       var $submitButton = $("<input>").addClass("submit_button").attr("type", "submit").attr("value", "Submit");
-      $timing.append($submitTimeForm).append($inputTime).append($inputTime).append($submitButton);
+      $submitTimeForm.append($inputTime).append($inputTime).append($submitButton);
+      $timing.append($submitTimeForm);
 
       $actions.append($deletebox).append($submitTimeForm);
+      $container.append($actions);
 
       var $footer = $("<footer>");
       var $total = $("<span>").text("Total Items: ");
       var $itemsTotal = $("<span>").addClass("items_total").text(order.itemCount);
       $footer.append($total).append($itemsTotal);
 
-      $order.append($header).append($container).append($actions).append($footer);
+      $order.append($header).append($container).append($footer);
+      console.log($order);
       return $order;
       }
 

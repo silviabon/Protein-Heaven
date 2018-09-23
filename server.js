@@ -69,7 +69,7 @@ const createOrderRow = function(items, userId) {
       .then((orderId)=>{
 
         items.forEach(item => {
-        knex('orders_items')
+        knex('order_items')
           .insert({
             order_id: orderId[0],
             item_id: item.id,
@@ -107,9 +107,9 @@ const createOrderRow = function(items, userId) {
 
 const getOrders = function () {
   return knex.select('orders.id', 'orders.status', 'orders.submit_date', 'orders.estimated_time',
-   'users.name', 'users.phone_number', 'orders_items.item_id', 'orders_items.quantity')
+   'users.name', 'users.phone_number', 'order_items.item_id', 'order_items.quantity')
     .from('orders')
-    .join('orders_items', 'orders.id', '=', 'orders_items.order_id')
+    .join('order_items', 'orders.id', '=', 'order_items.order_id')
     .join('users', 'users.id', '=', 'orders.user_id')
     .where('users.access_level', '=', 2 ).andWhere('orders.status', '=', true)
     /*.then()*/
@@ -139,20 +139,20 @@ app.get("/menu", (req, res) => {
 
 
 //submit order and go to confirmation page
-app.post("/menu", (req, res) => {
-  if(data){
-  //?? how to send this to database? ?????????
-  let id = req.session.order_id;
-  res.render("orderlist/::id/confirmation");
-  }else{
-    res.status(400).send("Error: ");
-  }
-});
+// app.post("/menu", (req, res) => {
+//   if(data){
+//   //?? how to send this to database? ?????????
+//   let id = req.session.order_id;
+//   res.render("orderlist/::id/confirmation");
+//   }else{
+//     res.status(400).send("Error: ");
+//   }
+// });
 
 
 //Confirmation/status page
 app.get("/confirmation/::id", (req, res) => {
-  res.render("confirmation", order_id);
+  res.render("confirmation");
 });
 
 
@@ -173,6 +173,13 @@ app.get("/orderlist", (req, res) => {
     })
 
 });
+//make a query every second or so to update the page// set interval *******
+
+//delete later, only for testing purposes:
+app.get("/order", (req, res) => {
+  res.render("order");
+});
+
 
 app.post('/checkout_confirmation', (req, res) => {
   const items = [
