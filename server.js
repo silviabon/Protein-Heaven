@@ -21,8 +21,8 @@ const knexLogger  = require('knex-logger');
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
 
-const {getMenuItems} =  require("./routes/items")(knex);
-const {getOrders} =     require("./routes/orders")(knex);
+//const {getMenuItems} =  require("./routes/items")(knex);
+//const {getOrders} =     require("./routes/orders")(knex);
 
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
@@ -172,7 +172,10 @@ app.get("/orderlist", (req, res) => {
 });
 //make a query every second or so to update the page// set interval *******
 
-
+//delete later, only for testing purposes:
+app.get("/order", (req, res) => {
+  res.render("order");
+});
 
 
 // post
