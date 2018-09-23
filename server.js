@@ -25,8 +25,9 @@ const knex        = require("knex")(knexConfig[ENV]);
 const morgan      = require('morgan');
 const knexLogger  = require('knex-logger');
 
-// Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
+const ordersRoutes = require("./routes/orders");
+const itemsRoutes =  require("./routes/items");
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
@@ -49,8 +50,8 @@ app.use(express.static("public"));
 
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));
-//app.use("/api/orders", ordersRoutes(knex)); //CHECK IF THIS IS RIGHT
-//app.use("/api/items", itemsRoutes(knex));   //CHECK IF THIS IS RIGHT
+app.use("/api/orders", ordersRoutes(knex)); //CHECK IF THIS IS RIGHT
+app.use("/api/items", itemsRoutes(knex));   //CHECK IF THIS IS RIGHT
 
 
 const createOrderRow = function(items, userId) {
@@ -80,6 +81,7 @@ const createOrderRow = function(items, userId) {
 
 };
 
+
 /*const createOrderFromItems = function(items, user) {
 
   const orderPromise = createOrderRow();
@@ -104,7 +106,6 @@ const createOrderRow = function(items, userId) {
   })
 }*/
 
-
 const getOrders = function () {
   return knex.select('orders.id', 'orders.status', 'orders.submit_date', 'orders.estimated_time',
    'users.name', 'users.phone_number', 'order_items.item_id', 'order_items.quantity')
@@ -115,6 +116,7 @@ const getOrders = function () {
     /*.then()*/
     // add to most recently created order
 }
+
 
 const getUser = function () {
   return /*const userPromise =*/ knex.select('*').from('users')
@@ -155,29 +157,29 @@ app.get("/confirmation/::id", (req, res) => {
 });
 
 
-// Order list page
+//Order list page
 app.get("/orderlist", (req, res) => {
 
   //make interval to ajax this the following every second
 
-  // get table of orders
-  const getOrdersPromise = getOrders();
-  // send orders to orderlist
-  const ordersPromise = getOrdersPromise
-    ordersPromise.then((order) => {
-      console.log(order)
-      const openOrders = {order}
+  // // get table of orders
+  // const getOrdersPromise = getOrders();
+  // // send orders to orderlist
+  // const ordersPromise = getOrdersPromise;
+  //   ordersPromise.then((order) => {
+  //     console.log(order);
+  //     const openOrders = order;
+  //     //console.log("this is the object that is passed:", openOrders);
+      res.render("orderlist");
+  //   });
 
-      res.render("orderlist", openOrders);
-    })
-
-});
+ });
 //make a query every second or so to update the page// set interval *******
 
-//delete later, only for testing purposes:
-app.get("/order", (req, res) => {
-  res.render("order");
-});
+
+// app.get("/orderlist", (req, res) => {
+//   res.render("orderlist");
+// });
 
 
 app.post('/checkout_confirmation', (req, res) => {

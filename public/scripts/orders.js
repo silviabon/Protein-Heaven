@@ -1,34 +1,33 @@
 
 $(document).ready(function() {
 
-  const order =[
-      {
-        id: "1",
-        username: "Alice",
-        phoneNum: 123456,
-        status: "in process",
-        subTime: "12:55 PM",
-        estTime: "13:30 PM",
-        items: [
-                  {name: "Chicken", quantity: 1},
-                  {name: "Fish", quantity: 1},
-                  {name: "Beef", quantity: 2}
-    ],
-        itemCount: 3
-      }];
-
-
 
   function renderOrders(orders) {
       $('.orders').empty();
       // loops through orders
         // calls createOrderElement for each order
         // takes return value and appends it to the orders container
+        //console.log("first order inside renderorders: ", orders[0]);
+        let newOrders = [];
         for(i in orders){
-        let $order = createOrderElement(orders[i]);
-        $('.orders').append($order);
+          let hasOrder = false;
+          for (var j = 0; j < newOrders.length; j++) {
+            if(orders[i].id === newOrders[j].id){
+              hasOrder = true;
+              newOrders[j].items.push({"item_id": orders[i].item, "quantity": orders[i].quantity});
+            }
+          }
+          if(hasOrder === false){
+            newOrders.push({"id": orders[i].id, "status": orders[i].status, "submit_date": orders[i].submit_date, "estimated_time": orders[i].estimated_time, "name": orders[i].name, "phone_number": orders[i].phone_number, "items": [{"item_id": orders[i].item, "quantity": orders[i].quantity}]});
+          }
+        }
+        console.log("new orders: ",newOrders);
+        for(i in newOrders){
+          let $order = createOrderElement(newOrders[i]);
+          $('.orders').append($order);
+        }
       }
-    }
+
 
 
     function createOrderElement(order){
@@ -40,12 +39,12 @@ $(document).ready(function() {
 
       var $userbox = $("<div>").addClass("user_box");
       var $client = $("<span>").text("Client: ");
-      var $username = $("<span>").addClass("user_name").text(order.username);
+      var $username = $("<span>").addClass("user_name").text(order.name);
       $userbox.append($client).append($username);
 
       var $phonebox = $("<div>").addClass("phone_box");
       var $phone = $("<span>").text("Phone: ");
-      var $phoneNum = $("<span>").addClass("phone_number").text(order.phoneNum);
+      var $phoneNum = $("<span>").addClass("phone_number").text(order.phone_number);
       $phonebox.append($phone).append($phoneNum);
 
       var $orderbox = $("<div>").addClass("order_number_box");
@@ -62,13 +61,11 @@ $(document).ready(function() {
       var $list = $("<ul>");
 
 
+      for (i in order.items){
+        var $item = $("<li>").addClass("item").text(`(${order.items[i].quantity}) - ${order.items[i].item_id}`);
+        $list.append($item);
+      }
 
-      // order.items.forEach(function(i){
-      //   var $item = $("<li>").addClass("item").text(`(${i.quantity}) - ${i.name}`);
-      //   $list.append($item);
-      // });
-      var $item = $("<li>").addClass("item").text("one food item");
-      $list.append($item);
 
 
       $items.append($par).append($list);
@@ -81,7 +78,7 @@ $(document).ready(function() {
 
       var $timing = $("<div>").addClass("timing");
       var $submitTimeForm = $("<form>").addClass("submitEstimatedTime").attr("method", "POST").attr("action", "/orderlist").text("Estimated time: ");
-      var $inputTime = $("<input>").attr("type", "text").attr("name", "estimatedTime").attr("placeholder", "e.g.: 6:00 PM");
+      var $inputTime = $("<input>").attr("type", "text").attr("name", "estimatedTime").attr("placeholder", "e.g.: 6:00 PM").attr("value", moment(order.estimated_time).format('MMMM Do YYYY, h:mm:ss a'));
       var $submitButton = $("<input>").addClass("submit_button").attr("type", "submit").attr("value", "Submit");
       $submitTimeForm.append($inputTime).append($inputTime).append($submitButton);
       $timing.append($submitTimeForm);
@@ -89,26 +86,31 @@ $(document).ready(function() {
       $actions.append($deletebox).append($submitTimeForm);
       $container.append($actions);
 
-      var $footer = $("<footer>");
-      var $total = $("<span>").text("Total Items: ");
-      var $itemsTotal = $("<span>").addClass("items_total").text(order.itemCount);
-      $footer.append($total).append($itemsTotal);
-
-      $order.append($header).append($container).append($footer);
+      $order.append($header).append($container);
       console.log($order);
       return $order;
       }
 
     //loads the orders in the page
     function loadOrders(){
-      $.ajax('orders', { method: 'GET' })
-        .then(function (orders) {
-          renderOrders(orders);
+      //$.ajax('orderlist', { method: 'GET' })
+      $.ajax({method: "GET", url: "/api/orders"})
+      .done((openOrders) => {
+        console.log("inside loadOrders: ", openOrders);
+        renderOrders(openOrders);
       });
-    }
+  };
 
-  //loadOrders(); implement when db is connected
-  renderOrders(order);
+
+    //   $.ajax('orderlist', openOrders)
+    //     .then(function (openOrders) {
+    //      console.log("inside loadOrders: ", openOrders);
+    //       renderOrders(openOrders);
+    //   });
+    // }
+
+  loadOrders(); //implement when db is connected
+  //renderOrders(order);
 
 
 });
