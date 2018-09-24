@@ -1,3 +1,9 @@
+@import './partials/index';
+@import './partials/order_page';
+@import './partials/menu';
+@import './partials/orderlist';
+@import './partials/confirmation';
+
 body {
   background-color: #EEE;
 
@@ -7,8 +13,8 @@ body {
 }
 
 
-@import 'order_page';
-@import 'menu';
-@import 'orderlist';
+
+
+
 
 

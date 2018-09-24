@@ -1,6 +1,11 @@
 "use strict";
 
 require('dotenv').config();
+//helpers
+const moment = require('moment');
+/*const dataHelpers = require('./dataHelpers');*/
+/*const queries = require("../db_queries");*/ // delete?
+
 
 const PORT        = process.env.PORT || 8080;
 const ENV         = process.env.ENV || "development";
@@ -16,12 +21,13 @@ const knexLogger  = require('knex-logger');
 
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
-
+const itemsRoutes = require('./routes/items');
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
 app.use(morgan('dev'));
 
+app.use(bodyParser.json())
 // Log knex SQL queries to STDOUT as well
 app.use(knexLogger(knex));
 
@@ -33,37 +39,249 @@ app.use("/styles", sass({
   debug: true,
   outputStyle: 'expanded'
 }));
+
 app.use(express.static("public"));
 
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));
+//app.use("/api/orders", ordersRoutes(knex)); //CHECK IF THIS IS RIGHT
+app.use("/api/items", itemsRoutes(knex));
 
+
+const createOrderRow = function(items, userId) {
+  console.log("log from order Row")
+  const date = new Date();
+  const getTime = date.getTime();
+
+   return knex('orders')
+      .returning('id')
+      .insert({
+        status: true,
+        submit_date: getTime,
+        estimated_time: null,
+        user_id: 1 /*user*/ // change to cookie_session user equivlent
+      })
+
+      .then((orderId)=>{
+        items.forEach(item => {
+        knex('orders_items')
+          .insert({
+            order_id: orderId[0],
+            item_id: item.id,
+            quantity: item.quantity
+          }).then( (rows) => {
+            return rows;
+          }).catch(function(err) {
+             return error;
+          })
+
+      })
+
+  })
+}
+
+
+/*const createOrderFromItems = function(items, user) {
+
+  const orderPromise = createOrderRow();
+  const orderItems = orderPromise
+    .then( (order) => {
+      console.log("ORDER WAS CREATED ",order)
+      //first send to get page
+      createOrderItems(order.id, items)
+      console.log("after order items");
+    })
+  }*/
+
+/*const createOrderItems = function(orderId, items) {
+  console.log("from createOrderItems")
+  items.forEach(item => {
+    knex('orders_items')
+      .insert({
+        order_id: orderId,
+        item_id: item.id,
+        quantity: item.quantity
+      })
+  })
+}*/
+
+
+const getOrders = function () {
+  return knex.select('orders.id', 'orders.status', 'orders.submit_date', 'orders.estimated_time',
+   'users.name', 'users.phone_number', 'orders_items.item_id', 'orders_items.quantity')
+    .from('orders')
+    .join('orders_items', 'orders.id', '=', 'orders_items.order_id')
+    .join('users', 'users.id', '=', 'orders.user_id')
+    .where('users.access_level', '=', 2 ).andWhere('orders.status', '=', true)
+    /*.then()*/
+    // add to most recently created order
+}
+
+/*const getMenuItems = function () {
+  return knex.select('*')
+    .from('menu_items')
+      .then( (rows) => {
+            return rows;
+          }).catch(function(err) {
+             return error;
+          })
+}*/
+
+const getUser = function () {
+  return /*const userPromise =*/ knex.select('*').from('users')
+    .where('users').where('id', 2 /*session cookie*/)
+}
+
+// gets
+// gets
+// gets
 // Home page
-app.get("/", (req, res) => {
-  res.render("index");
-});
 
 //Menu page
 app.get("/menu", (req, res) => {
-  res.render("menu");
+  res.render('menu')
 });
 
-// Confirmation page
-app.get("/confirmation", (req, res) => {
+
+//submit order and go to confirmation page
+// app.post("/menu", (req, res) => {
+//   if(data){
+//   //?? how to send this to database? ?????????
+//   let id = req.session.order_id;
+//   res.render("orderlist/::id/confirmation");
+//   }else{
+//     res.status(400).send("Error: ");
+//   }
+// });
+
+
+//Confirmation/status page
+app.get("/confirmation/::id", (req, res) => {
   res.render("confirmation");
 });
 
+
 // Order list page
 app.get("/orderlist", (req, res) => {
-  res.render("orderlist");
-});
 
-// Order  page
+  // get table of orders
+  const getOrdersPromise = getOrders();
+  // send orders to orderlist
+  const ordersPromise = getOrdersPromise
+    .then((order) => {
+      console.log(order)
+      const openOrders = {order}
+
+      res.render("orderlist", openOrders);
+      // need response status
+    })
+
+});
+//make a query every second or so to update the page// set interval *******
+
+//delete later, only for testing purposes:
 app.get("/order", (req, res) => {
   res.render("order");
 });
 
 
+app.post('/checkout_confirmation', (req, res) => {
+
+  // get items object from body
+
+  const checkOutItems = req.body;
+  const items = checkOutItems;
+
+  const orderPromise = createOrderRow(items);
+  const ordersItemsPromise = orderPromise
+    .then( (order) => {
+      console.log(order, "in order then");
+      //////////// undefined
+      res.status(201).json(order);
+      //re direct to confirmation page
+    })
+    .catch(function(error) {
+      console.error(error)
+    })
+})
+
+// select all with id of created then http response as proper
+// and redirect user page too checkout
+
+
+  /*res.redirect('confirmationPage');*/
+
+
+// post for admin item list to correct item controls
+   // code
+   // code
+   // code
+
+// post for admin specific item
+  // code
+  // code
+  // code
+
+
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
 });
+
+
+// return knex.select(*).from('orders')
+//     .join('orders_items', 'id', '=', 'orders_items.order_id')
+//     .where('order.id', 1 /*set dynamically as newest*/)
+//     .then( (orders) => {
+//       return knex.select(*).from(orders)
+//         .where('users', 'id', '=', 'orders.user_id')
+//         .where('users.id', 1)
+//     })
+
+
+//post request to server with order quanities and type
+
+
+/*  SELECT orders.id, orders.submit_date, orders.estimated_time, users.name,
+    users.phone_number, orders_items.item_id, orders_items.quantity
+     FROM orders
+     JOIN orders_items ON (orders.id=orders_items.order_id)
+     JOIN users ON (users.id=orders.user_id)
+     WHERE users.access_level = 2 and orders.status = true;
+
+
+*/
+// need delete removes orders based off order ID
+
+
+/*select * from orders
+  join users on (users.id=orders.user_id)
+  where users.id = 1;
+Select * from orders_items
+  join menu_items on (menu_items.id=orders_items.item_id)
+  join order.menu_item */
+
+
+
+// set user as global var so it can be passed and pulled.
+
+//need to do an ajax get on checkout button
+app.get("/orderlist", (res, req) => {
+
+  client.messages.create({
+    body: "Your order was received, please check the website for an estimated time!",
+    to: '+16047288182',
+    from: '+16043595931'
+    })
+  .then((message) => console.log(message.sid));
+  })
+
+  app.get("/menu", (res, req) => {
+
+  client.messages.create({
+    body: "You have an order!",
+    to: '+16044013161',
+    from: '+16043595931'
+    })
+  .then((message) => console.log(message.sid));
+  })
+
