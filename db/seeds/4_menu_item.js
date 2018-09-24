@@ -43,7 +43,7 @@ exports.seed = function(knex, Promise) {
           id: 6,
           name: 'Steak and Eggs',
           price: 12.99,
-          description: 'Breakfast gains, bruh',
+          description: 'The right choice',
           urlPath: 'https://media.blueapron.com/recipes/1553/square_newsletter_images/20160225-1541-4-1697/2P_021616_4_SteakEggsKimchiFriedRice_20-_203953_SQ_hi_res.jpg'
         })
       ]);
