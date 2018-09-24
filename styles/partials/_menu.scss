@@ -96,6 +96,12 @@ body {
       .card {
         width: 32%;
         margin-right: 0px;
+        .card-body {
+          .namePrice {
+            display:flex;
+            justify-content:space-between;
+          }
+        }
       }
     }
   }
