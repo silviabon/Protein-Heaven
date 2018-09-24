@@ -1,8 +1,6 @@
 let checkOutStaging = [];
 
 
-
-
 $(function() {
 
   function addClickHandler() {
