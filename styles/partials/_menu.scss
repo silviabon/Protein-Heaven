@@ -12,11 +12,11 @@ body {
     .checkOutContainer {
       display:inline-block;
       width:30%;
-      height: 500px;
+      height: 800px;
       background-color:white;
       margin:10px;
       div {
-        height: 90%;
+        height: 75%;
         padding: 1em;
         background-color: #FFFAF1;
         .itemRow {
@@ -29,12 +29,58 @@ body {
             display:inline;
             font-size:20px
           }
-          button {
-            width: 2em;
-            height: 2em;
-            float:right; /* change to not float */
+          // button {
+          //   width: 2em;
+          //   height: 2em;
+          //   float:right; /* change to not float */
+          // }
+        }
+      }
+      #totals {
+        height:15%;
+        padding: .25em;
+        display: flex;
+        flex-direction: column;
+        #subTotal {
+          display: flex;
+          justify-content:space-between;
+          padding: .25em;
+          p {
+
+          }
+          #subAmmount {
+
           }
         }
+        #tax {
+          display: flex;
+          justify-content:space-between;
+          padding: .25em;
+          p {
+
+          }
+          #taxAmmount {
+
+          }
+        }
+        #totalPrice {
+          display: flex;
+          justify-content:space-between;
+          padding: .25em;
+
+          p{
+            display:inline;
+          }
+          #totalAmmount {
+
+          }
+        }
+      }
+
+
+
+
+
       }
       button {
         background-color: pink;
@@ -53,5 +99,16 @@ body {
       }
     }
   }
-/* final body */
-}
+
+
+/*     <div id="totals">
+      <div id="subTotal">
+        <p>Subtotal</p>
+        <p id="subAmmount">$0.00</p>
+      </div>
+      <div id="tax">
+        <p>Tax</p>
+        <p id="taxAmmount">$0.00</p>
+      </div>
+    </div>
+ */
