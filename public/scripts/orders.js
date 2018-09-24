@@ -69,7 +69,7 @@ $(document).ready(function() {
 
       var $actions = $("<div>").addClass("actions");
       var $deletebox = $("<div>").addClass("deletion_box");
-      var $btn = $("<button>").addClass("delete").text("COMPLETE");
+      var $btn = $("<button>").addClass("btn btn-danger").text("COMPLETE");
       $deletebox.append($btn);
 
       var estimative;

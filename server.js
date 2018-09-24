@@ -77,53 +77,11 @@ const createOrderRow = function(items, userId) {
 };
 
 
-/*const createOrderFromItems = function(items, user) {
-
-  const orderPromise = createOrderRow();
-  const orderItems = orderPromise
-    .then( (order) => {
-      console.log("ORDER WAS CREATED ",order)
-      //first send to get page
-      createOrderItems(order.id, items)
-      console.log("after order items");
-    })
-  }*/
-
-/*const createOrderItems = function(orderId, items) {
-  console.log("from createOrderItems")
-  items.forEach(item => {
-    knex('orders_items')
-      .insert({
-        order_id: orderId,
-        item_id: item.id,
-        quantity: item.quantity
-      })
-  })
-}*/
-
-
-// const getOrders = function () {
-//   return knex.select('orders.id', 'orders.status', 'orders.submit_date', 'orders.estimated_time',
-//    'users.name', 'users.phone_number', 'orders_items.item_id', 'orders_items.quantity')
-//     .from('orders')
-//     .join('orders_items', 'orders.id', '=', 'orders_items.order_id')
-//     .join('users', 'users.id', '=', 'orders.user_id')
-//     .where('users.access_level', '=', 2 ).andWhere('orders.status', '=', true)
-//     /*.then()*/
-//     // add to most recently created order
-// }
-
-
-
 const getUser = function () {
   return /*const userPromise =*/ knex.select('*').from('users')
     .where('users').where('id', 2 /*session cookie*/)
 }
 
-// gets
-// gets
-// gets
-// Home page
 
 //Menu page
 app.get("/menu", (req, res) => {
@@ -165,9 +123,7 @@ app.post('/orderlist',  (req, res) => {
 
 // upon checkout, create now order and
 app.post('/checkout_confirmation', (req, res) => {
-  // get items object from body
-  /*Select
-  req.body['items']*/
+
   const items = [
     {id: 1, quantity: 1},
     {id: 2, quantity: 1},
@@ -190,61 +146,9 @@ app.post('/checkout_confirmation', (req, res) => {
     })
 })
 
-// select all with id of created then http response as proper
-// and redirect user page too checkout
-
-
-  /*res.redirect('confirmationPage');*/
-
-
-// post for admin item list to correct item controls
-   // code
-   // code
-   // code
-
-// post for admin specific item
-  // code
-  // code
-  // code
 
 
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
 });
 
-
-// return knex.select(*).from('orders')
-//     .join('orders_items', 'id', '=', 'orders_items.order_id')
-//     .where('order.id', 1 /*set dynamically as newest*/)
-//     .then( (orders) => {
-//       return knex.select(*).from(orders)
-//         .where('users', 'id', '=', 'orders.user_id')
-//         .where('users.id', 1)
-//     })
-
-
-//post request to server with order quanities and type
-
-
-/*  SELECT orders.id, orders.submit_date, orders.estimated_time, users.name,
-    users.phone_number, orders_items.item_id, orders_items.quantity
-     FROM orders
-     JOIN orders_items ON (orders.id=orders_items.order_id)
-     JOIN users ON (users.id=orders.user_id)
-     WHERE users.access_level = 2 and orders.status = true;
-
-
-*/
-// need delete removes orders based off order ID
-
-
-/*select * from orders
-  join users on (users.id=orders.user_id)
-  where users.id = 1;
-Select * from orders_items
-  join menu_items on (menu_items.id=orders_items.item_id)
-  join order.menu_item */
-
-
-
-// set user as global var so it can be passed and pulled.

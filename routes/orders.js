@@ -53,18 +53,18 @@ function insertEstTime(estTime, prepTime, orderId){
     estimated_time: estTime
     })
     .then(() => {
-        console.log("preptime: ", prepTime);
+      console.log("client: ", client.messages);
       client.messages.create({
-       body: `Your order will be ready in ${prepTime}!`,
-       to: '+16044013161',
-       from: '+16043595931'
-       })
-      .then((message) => console.log(message.sid))
-      .then(() => {
-        res.status(200);
-      });
-});
-  }
+         body: `Your order will be ready in ${prepTime} minutes!`,
+         from: '+16043595931',
+         to: '+16044013161'
+         })
+      .then((message) => {
+        console.log(message.sid);
+      }).done();
+      res.status(200);
+    });
+}
 
 
 
