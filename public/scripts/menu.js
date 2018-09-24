@@ -57,7 +57,6 @@ $(function() {
               <p class="card-text">${item.description}</p>
               <div class="form-group" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}"">
                 <button type="submit" class="btn btn-primary">Add</button>
-                <label for="exampleFormControlSelect1">Example select</label>
                 <select class="form-control">
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -78,9 +77,9 @@ $(function() {
     checkOutStaging.forEach((item) => {
       $('.checkOutContainer #menuItems').append(`
         <div class="itemRow" data-id="${item['id']}">
-            <p>${item['name']}</p>
-            <p>${item['quantity']}</p>
-            <p>${item['price']}</p>
+            <p id="name1">${item['name']}</p>
+            <p id="quantity1">QT:  ${item['quantity']}</p>
+            <p id="price1">${item['price']}</p>
         </div>
         `)
 

@@ -36,7 +36,7 @@ exports.seed = function(knex, Promise) {
           id: 5,
           name: 'Avacado Toast',
           price: 5.99,
-          description: 'The reason millenials cannot afford a house',
+          description: 'Reason millennials are broke',
           urlPath: 'https://www.californiaavocado.com/getattachment/435e6024-0445-4e2b-b512-27b21bf03a05/California-Avocado-Toast-Three-Ways'
         }),
         knex('menu_items').insert({

@@ -20,14 +20,22 @@ body {
         padding: 1em;
         background-color: #FFFAF1;
         .itemRow {
-          display:flex-inline;
+          display:flex;
           width:100%;
           height:2.5em;
-          background-color:grey;
           padding:.1em;
-          p{
+          justify-content: space-between;
+
+
+          #name1 {
             display:inline;
             font-size:20px
+          }
+          #quantity1 {
+
+          }
+          #price1{
+
           }
           // button {
           //   width: 2em;
@@ -95,12 +103,26 @@ body {
       flex-wrap: wrap;
       .card {
         width: 32%;
+        height:30em;
         margin-right: 0px;
+        .card-img-top {
+          height: 43%;
+        }
         .card-body {
+          .card-text {
+            height:15%;
+            margin-bottom: 3em;
+          }
           .namePrice {
             display:flex;
             justify-content:space-between;
+            height: 10%;
           }
+          // .form-group {
+          //   .submit {
+          //     margin-bottom: 20px;
+          //   }
+          // }
         }
       }
     }
