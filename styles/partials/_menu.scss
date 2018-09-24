@@ -1,48 +1,85 @@
 body {
   width: 100%;
-
   .col-6 {
   border: 1px solid black
   }
-
 .col {
   border: 1px solid black
   }
-
   #mainContainer {
     width: 100%;
     display:flex;
-
     .checkOutContainer {
       display:inline-block;
       width:30%;
-      height: 500px;
+      height: 800px;
       background-color:white;
       margin:10px;
-
       div {
-        height: 90%;
+        height: 75%;
         padding: 1em;
         background-color: #FFFAF1;
-
         .itemRow {
           display:flex-inline;
           width:100%;
           height:2.5em;
           background-color:grey;
           padding:.1em;
-
           p{
             display:inline;
             font-size:20px
           }
+          // button {
+          //   width: 2em;
+          //   height: 2em;
+          //   float:right; /* change to not float */
+          // }
+        }
+      }
+      #totals {
+        height:15%;
+        padding: .25em;
+        display: flex;
+        flex-direction: column;
+        #subTotal {
+          display: flex;
+          justify-content:space-between;
+          padding: .25em;
+          p {
 
-          button {
-            width: 2em;
-            height: 2em;
-            float:right; /* change to not float */
+          }
+          #subAmmount {
+
           }
         }
+        #tax {
+          display: flex;
+          justify-content:space-between;
+          padding: .25em;
+          p {
+
+          }
+          #taxAmmount {
+
+          }
+        }
+        #totalPrice {
+          display: flex;
+          justify-content:space-between;
+          padding: .25em;
+
+          p{
+            display:inline;
+          }
+          #totalAmmount {
+
+          }
+        }
+      }
+
+
+
+
 
       }
       button {
@@ -50,22 +87,34 @@ body {
         height: 10%;
         width:100%;
       }
-
     }
-
     #menu-container {
       display:flex;
       width: 70%;
       flex-direction: row;
       flex-wrap: wrap;
-
       .card {
         width: 32%;
         margin-right: 0px;
+        .card-body {
+          .namePrice {
+            display:flex;
+            justify-content:space-between;
+          }
+        }
       }
     }
-
-
   }
 
 
+/*     <div id="totals">
+      <div id="subTotal">
+        <p>Subtotal</p>
+        <p id="subAmmount">$0.00</p>
+      </div>
+      <div id="tax">
+        <p>Tax</p>
+        <p id="taxAmmount">$0.00</p>
+      </div>
+    </div>
+ */

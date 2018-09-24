@@ -1,8 +1,6 @@
 let checkOutStaging = [];
 
 
-
-
 $(function() {
 
   function addClickHandler() {
@@ -10,8 +8,10 @@ $(function() {
     $('.btn.btn-primary').click( function() {
       let itemId = $(this).parent().data("id");
       let itemName = $(this).parent().data("name");
+      let itemPrice = $(this).parent().data("price");
+
       let itemQuantity =  Number($(this).parent().find('option:selected').val());
-      let newCheckOutItem = {id: itemId, name: itemName, quantity: itemQuantity};
+      let newCheckOutItem = {id: itemId, name: itemName, price:itemPrice, quantity: itemQuantity};
 
       // array is empty push
         //loop through array and if item is the same, change item quantity instead of new item
@@ -35,8 +35,9 @@ $(function() {
         // checkOutStaging.sort((a, b) => a.id < b.id ? a : b);
         itemAdded = false;
       // clear and then populate checkout container
-      $('.checkOutContainer > div').empty();
+      $('.checkOutContainer #menuItems').empty();
       createCheckoutItem();
+      calculateTotal()
     })
   }
 
@@ -49,9 +50,12 @@ $(function() {
           <div class="card"  >
             <img class="card-img-top" src="${item.urlPath}">
             <div class="card-body">
-              <h5 class="card-title">${item.name}</h5>
+              <div class="namePrice">
+                <h5 class="card-title">${item.name}</h5>
+                <p>${item.price}</p>
+              </div>
               <p class="card-text">${item.description}</p>
-              <div class="form-group" data-id="${item.id}" data-name="${item.name}">
+              <div class="form-group" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}"">
                 <button type="submit" class="btn btn-primary">Add</button>
                 <label for="exampleFormControlSelect1">Example select</label>
                 <select class="form-control">
@@ -72,12 +76,14 @@ $(function() {
   //for each item in the array show in checkout
   function createCheckoutItem() {
     checkOutStaging.forEach((item) => {
-      $('.checkOutContainer > div').append(`
+      $('.checkOutContainer #menuItems').append(`
         <div class="itemRow" data-id="${item['id']}">
             <p>${item['name']}</p>
             <p>${item['quantity']}</p>
+            <p>${item['price']}</p>
         </div>
         `)
+
      });
     /*$('.itemRow').append(lessButton).append(moreButton);*/
   }
@@ -102,6 +108,25 @@ $(function() {
     }
     return itemAdded;
   }
+
+  // calucate totals and append to dom
+  function calculateTotal() {
+    const salesTax = .05
+    let subTotal = 0;
+
+
+    checkOutStaging.forEach( (item) => {
+      subTotal += item.price * item.quantity;
+    })
+
+    let calulatedTax = (subTotal * salesTax);
+    let total = (subTotal + salesTax)
+
+    $('#subAmmount').text(`$${subTotal.toFixed(2)}`)
+    $('#taxAmmount').text(`$${calulatedTax.toFixed(2)}`)
+    $('#totalAmmount').text(`$${total.toFixed(2)}`)
+  }
+
   // on checkout item minus click, remove one item from count and array
 // move up to when created to function
   // $('.less').on('click', function() {
@@ -137,7 +162,7 @@ $(function() {
         .then(function () {
           checkOutStaging = [];
           //clear all chilcren out of checkout
-          $('.checkOutContainer > div').empty();
+          $('.checkOutContainer #menuItems').empty();
         });
 
    });
