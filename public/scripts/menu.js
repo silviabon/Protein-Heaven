@@ -13,8 +13,12 @@ $(function() {
       let itemQuantity =  Number($(this).parent().find('option:selected').val());
       let newCheckOutItem = {id: itemId, name: itemName, quantity: itemQuantity};
 
+      // array is empty push
         //loop through array and if item is the same, change item quantity instead of new item
         let itemAdded;
+        // refactor to be included in other less function
+        // refactor to be included in other less function
+        // refactor to be included in other less function
 
         // modifyCheckoutAmmounts(itemId, itemQuantity, true)
         for (let i = 0; i < checkOutStaging.length; i++) {

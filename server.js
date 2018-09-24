@@ -5,6 +5,7 @@ require('dotenv').config();
 const moment = require('moment');
 
 
+
 const PORT        = process.env.PORT || 8080;
 const ENV         = process.env.ENV || "development";
 const express     = require("express");
@@ -29,6 +30,7 @@ const itemsRoutes =  require("./routes/items");
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
 app.use(morgan('dev'));
 
+app.use(bodyParser.json())
 // Log knex SQL queries to STDOUT as well
 app.use(knexLogger(knex));
 
@@ -45,8 +47,9 @@ app.use(express.static("public"));
 
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));
-app.use("/api/orders", ordersRoutes(knex)); //CHECK IF THIS IS RIGHT
-app.use("/api/items", itemsRoutes(knex));   //CHECK IF THIS IS RIGHT
+app.use("/api/orders", ordersRoutes(knex));
+app.use("/api/items", itemsRoutes(knex));
+
 
 
 const createOrderRow = function(items, userId) {
@@ -76,6 +79,34 @@ const createOrderRow = function(items, userId) {
              return error;
           })
 
+
+      })
+
+  })
+}
+
+
+/*const createOrderFromItems = function(items, user) {
+
+  const orderPromise = createOrderRow();
+  const orderItems = orderPromise
+    .then( (order) => {
+      console.log("ORDER WAS CREATED ",order)
+      //first send to get page
+      createOrderItems(order.id, items)
+      console.log("after order items");
+    })
+  }*/
+
+/*const createOrderItems = function(orderId, items) {
+  console.log("from createOrderItems")
+  items.forEach(item => {
+    knex('orders_items')
+      .insert({
+        order_id: orderId,
+        item_id: item.id,
+        quantity: item.quantity
+>>>>>>> master
       })
 
   })
@@ -90,7 +121,17 @@ const getOrders = function () {
     .where('users.access_level', '=', 2 ).andWhere('orders.status', '=', true)
     /*.then()*/
     // add to most recently created order
-}
+
+
+/*const getMenuItems = function () {
+  return knex.select('*')
+    .from('menu_items')
+      .then( (rows) => {
+            return rows;
+          }).catch(function(err) {
+             return error;
+          })
+}*/
 
 
 const getUser = function () {
@@ -111,6 +152,7 @@ app.get("/menu", (req, res) => {
 
 
 
+
 // //submit order and go to confirmation page
 // app.post("/menu", (req, res) => {
 //   if(data){
@@ -126,6 +168,7 @@ app.get("/menu", (req, res) => {
 app.get("/confirmation/::id", (req, res) => {
   res.render("confirmation");
 });
+
 
 app.post('/checkout_confirmation', (req, res) => {
 
