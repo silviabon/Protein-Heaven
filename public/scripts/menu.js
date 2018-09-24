@@ -9,16 +9,10 @@ $(function() {
       // Add button
     $('.btn.btn-primary').click( function() {
       let itemId = $(this).parent().data("id");
-      let itemName = $(this).parent().data("foodName");
-      checkOutStaging.push(itemName);
+      let itemName = $(this).parent().data("name");
       let itemQuantity =  Number($(this).parent().find('option:selected').val());
       let newCheckOutItem = {id: itemId, name: itemName, quantity: itemQuantity};
-      console.log(newCheckOutItem)
       // array is empty push
-      if(checkOutStaging.length < 1) {
-
-
-      } else {
         //loop through array and if item is the same, change item quantity instead of new item
         let itemAdded;
         // refactor to be included in other less function
@@ -36,8 +30,8 @@ $(function() {
         if (!itemAdded) {
         checkOutStaging.push(newCheckOutItem);
         }
+        // checkOutStaging.sort((a, b) => a.id < b.id ? a : b);
         itemAdded = false;
-      }
       // clear and then populate checkout container
       $('.checkOutContainer > div').empty();
       createCheckoutItem();
@@ -47,16 +41,15 @@ $(function() {
 
   function renderItems (items) {
 
-
       items.forEach( (item) => {
 
         $('#menu-container').append(`
-          <div class="card" data-id="${item.id}" data-foodName="${item.name}">
+          <div class="card"  >
             <img class="card-img-top" src="${item.urlPath}">
             <div class="card-body">
               <h5 class="card-title">${item.name}</h5>
               <p class="card-text">${item.description}</p>
-              <div class="form-group" data-id="${item.id}">
+              <div class="form-group" data-id="${item.id}" data-name="${item.name}">
                 <button type="submit" class="btn btn-primary">Add</button>
                 <label for="exampleFormControlSelect1">Example select</label>
                 <select class="form-control">
@@ -71,23 +64,11 @@ $(function() {
           </div>
           `)
         })
-
       addClickHandler();
     }
 
-
-
-// populate page with images
-
-
- // array split
- // then splice
-
-
   //for each item in the array show in checkout
-  function createCheckoutItem () {
-    //
-    console.log(checkOutStaging)
+  function createCheckoutItem() {
     checkOutStaging.forEach((item) => {
       $('.checkOutContainer > div').append(`
         <div class="itemRow" data-id="${item['id']}">
@@ -167,11 +148,3 @@ $(function() {
 
 });
 
-
-
-// think about it dummy
-
-
-
-
-// approach logic
