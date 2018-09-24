@@ -64,7 +64,7 @@ const createOrderRow = function(items, userId) {
 
       .then((orderId)=>{
         items.forEach(item => {
-        knex('order_items')
+        knex('orders_items')
           .insert({
             order_id: orderId[0],
             item_id: item.id,
@@ -108,16 +108,24 @@ const createOrderRow = function(items, userId) {
 
 const getOrders = function () {
   return knex.select('orders.id', 'orders.status', 'orders.submit_date', 'orders.estimated_time',
-   'users.name', 'users.phone_number', 'order_items.item_id', 'order_items.quantity')
+   'users.name', 'users.phone_number', 'orders_items.item_id', 'orders_items.quantity')
     .from('orders')
-    .join('order_items', 'orders.id', '=', 'order_items.order_id')
+    .join('orders_items', 'orders.id', '=', 'orders_items.order_id')
     .join('users', 'users.id', '=', 'orders.user_id')
     .where('users.access_level', '=', 2 ).andWhere('orders.status', '=', true)
     /*.then()*/
     // add to most recently created order
 }
 
-
+const getMenuItems = function () {
+  return knex.select(*)
+    .from('menu_items')
+      .then( (rows) => {
+            return rows;
+          }).catch(function(err) {
+             return error;
+          })
+}
 
 const getUser = function () {
   return /*const userPromise =*/ knex.select('*').from('users')
@@ -131,9 +139,16 @@ const getUser = function () {
 
 //Menu page
 app.get("/menu", (req, res) => {
+  //
+  // essentially the same as the post down below
+  //
   //getMenuItems()
   //.then((menuItems) => {
     //console.log("menu items: " + menuItems);
+
+
+
+    // send items database object as template vars and loop over on ejs
     res.render("menu");
   //});
 });
@@ -160,7 +175,7 @@ app.get("/confirmation/::id", (req, res) => {
 // Order list page
 app.get("/orderlist", (req, res) => {
 
-  //make interval to ajax this the following every second
+
 
   // get table of orders
   const getOrdersPromise = getOrders();

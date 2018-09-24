@@ -25,6 +25,25 @@ body {
         padding: 1em;
         background-color: #FFFAF1;
 
+        .itemRow {
+          display:flex-inline;
+          width:100%;
+          height:2.5em;
+          background-color:grey;
+          padding:.1em;
+
+          p{
+            display:inline;
+            font-size:20px
+          }
+
+          button {
+            width: 2em;
+            height: 2em;
+            float:right; /* change to not float */
+          }
+        }
+
       }
       button {
         background-color: pink;
