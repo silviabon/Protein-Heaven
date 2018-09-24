@@ -62,19 +62,35 @@ const createOrderRow = function(items, userId) {
         estimated_time: null,
         user_id: 1 /*user*/ // change to cookie_session user equivlent
       })
-      .then((orderId)=>{
 
+      .then((orderId)=>{
         items.forEach(item => {
         knex('orders_items')
           .insert({
             order_id: orderId[0],
             item_id: item.id,
             quantity: item.quantity
-          }).then()
-      })
+          }).then( (rows) => {
+            return rows;
+          }).catch(function(err) {
+             return error;
+          })
+
       })
 
-};
+  })
+}
+
+const getOrders = function () {
+  return knex.select('orders.id', 'orders.status', 'orders.submit_date', 'orders.estimated_time',
+   'users.name', 'users.phone_number', 'orders_items.item_id', 'orders_items.quantity')
+    .from('orders')
+    .join('orders_items', 'orders.id', '=', 'orders_items.order_id')
+    .join('users', 'users.id', '=', 'orders.user_id')
+    .where('users.access_level', '=', 2 ).andWhere('orders.status', '=', true)
+    /*.then()*/
+    // add to most recently created order
+}
 
 
 const getUser = function () {
@@ -82,33 +98,56 @@ const getUser = function () {
     .where('users').where('id', 2 /*session cookie*/)
 }
 
+// Home page
+app.get("/", (req, res) => {
+  res.render("index");
+})
+
 
 //Menu page
 app.get("/menu", (req, res) => {
-  getMenuItems()
-  .then((menuItems) => {
-    console.log("menu items: " + menuItems);
-    res.render("menu", {menuItems});
-  });
+  res.render("menu");
 });
 
 
-//submit order and go to confirmation page
-app.post("/menu", (req, res) => {
-  if(data){
-  //?? how to send this to database? ?????????
-  let id = req.session.order_id;
-  res.render("orderlist/::id/confirmation");
-  }else{
-    res.status(400).send("Error: ");
-  }
-});
 
+// //submit order and go to confirmation page
+// app.post("/menu", (req, res) => {
+//   if(data){
+//   //?? how to send this to database? ?????????
+//   let id = req.session.order_id;
+//   res.render("orderlist/::id/confirmation");
+//   }else{
+//     res.status(400).send("Error: ");
+//   }
+// });
 
 //Confirmation/status page
 app.get("/confirmation/::id", (req, res) => {
-  res.render("confirmation", order_id);
+  res.render("confirmation");
 });
+
+app.post('/checkout_confirmation', (req, res) => {
+
+  // get items object from body
+
+  const checkOutItems = req.body;
+  const items = checkOutItems;
+
+  const orderPromise = createOrderRow(items);
+  const ordersItemsPromise = orderPromise
+    .then( (order) => {
+      console.log(order, "in order then");
+      //////////// undefined
+      res.status(201).json(order);
+      //re direct to confirmation page
+    })
+    .catch(function(error) {
+      console.error(error)
+    })
+})
+
+
 
 
 //Order list page
@@ -121,30 +160,6 @@ app.post('/orderlist',  (req, res) => {
   res.render("orderlist");
 });
 
-// upon checkout, create now order and
-app.post('/checkout_confirmation', (req, res) => {
-
-  const items = [
-    {id: 1, quantity: 1},
-    {id: 2, quantity: 1},
-    {id:3, quantity: 2}
-    ];
-
-  console.log("post request made");
-
-//on checkout confirmation, create new order row
-  const orderPromise = createOrderRow(items);
-  const ordersItemsPromise = orderPromise
-    .then( (order) => {
-      //////////// undefined
-      console.log(order, "post 2")
-      res.status(201).json(order);
-      //re direct to confirmation page
-    })
-    .catch(function(error) {
-      console.error(error)
-    })
-})
 
 
 

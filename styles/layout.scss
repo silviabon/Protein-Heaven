@@ -1,5 +1,3 @@
-@import 'menu';
-
 body {
   background-color: #EEE;
 
@@ -8,9 +6,8 @@ body {
   }
 }
 
-
+@import 'index';
 @import 'order_page';
 @import 'menu';
 @import 'orderlist';
-
-
+@import 'confirmation';

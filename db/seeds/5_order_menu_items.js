@@ -1,4 +1,3 @@
-
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
   return knex('orders_items').del()
@@ -23,7 +22,3 @@ exports.seed = function(knex, Promise) {
       ]);
     });
 };
-
-
-
-
