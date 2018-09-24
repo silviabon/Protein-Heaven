@@ -1,40 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Meta Information -->
-    <title>Orders page</title>
-
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
-
-    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+    <%- include ./partials/_head %>
     <script type="text/javascript" src="/scripts/orders.js"></script>
-    <script type="text/javascript" src="/vendor/moment.js"></script>
-
-
-
-    <!--
-    <script type="text/javascript" src="/vendor/jquery-2.2.3.min.js"></script>
-    <script type="text/javascript" src="/vendor/moment.js"></script>
-
-     App JS
-    <script type="text/javascript" src="/scripts/app.js"></script>
-
-     Char Counter JS
-    <script type="text/javascript" src="/scripts/composer-char-counter.js"></script>
--->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js" integrity="sha256-CutOzxCRucUsn6C6TcEYsauvvYilEniTXldPa6/wu0k=" crossorigin="anonymous"></script>
   </head>
+  
+  
 
-  <body>
-    <h1>Orders list</h1>
+  <h1 class="title">Orders</h1>
+  <body background ="http://static3.uk.businessinsider.com/image/598b2ef527fa6b53bc4639ce-1281/end-grain-cutting-board.jpg" class="backgroundImg"></body>
+
         <!-- import header ejs  -->
-
   <div class="orders">
-       <!-- orders boxes go here with ajax  -->
+       <!-- order box  -->
+      <section class="order_kitchen">
 
+        <header>
+          <div class="user_box">
+            <span>Client: </span>
+            <span class="user_name">user name</span>
+          </div>
+          <div class="phone_box">
+            <span>Phone: </span>
+            <span class="phone_number">555-5555</span>
+          </div>
+          <div class= "order_number_box">
+            <span>Order # </span>
+            <span class="order_number">23</span>
+          </div>
+        </header>
+
+        <div class="container">
+          <div class="items">
+            <p>Items:</p>
+            <ol>
+              <!-- ajax will be needed here to dinamically populate the items list below:  -->
+              <li class="item">Miso soup</li>
+              <li class="item">edamames </li>
+              <li class="item">beans </li>
+            </ol>
+          </div>
+
+          <div class="actions">
+            <div class="deletion_box">
+              <button class="delete" class="btn btn-danger">DELETE</button>
+            </div>
+            <div class="timing">
+              <form method="POST" action="/" class="submitEstimatedTime">
+                Estimated time: <input type="text" name="estimatedTime" placeholder="ej.: 6:00">
+                <br/>
+                <input class="submit_button" type="submit" value="Submit">
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
   </div>
-
-
   </body>
+
 </html>
