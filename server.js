@@ -185,7 +185,7 @@ app.get("/confirmation/:id", (req, res) => {
     .where('orders.id', '=', req.params.id)
     .then((results) => {
       console.log(results);
-      let templateVars = { order: results};
+      let templateVars = { order: results, moment: moment};
       console.log("template vars: ", templateVars)
        res.render("confirmation", templateVars);
        });

@@ -22,7 +22,7 @@
           <%} else{ %>
        <!--   moment(parseInt(order[0].estimated_time)).format('hh:mm a') -->
        Your order will be ready at
-          <%= order[0].estimated_time%>
+          <%= moment(Number(order[0].estimated_time)).format('h:mm a')%>
           <%}%>
         </span>
 
