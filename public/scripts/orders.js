@@ -76,8 +76,7 @@ $(document).ready(function() {
       if(order.estimated_time){
         estimative = moment(parseInt(order.estimated_time)).format('hh:mm a');
       }
-      console.log("estimate time: ", order.estimated_time);
-      console.log("estimate time2: ", moment(parseInt(order.estimated_time)).format('hh:mm a'));
+
       var $timing = $("<div>").addClass("timing");
       var $submitTimeForm = $("<form>").addClass("submitEstimatedTime").attr("method", "POST").attr("action", "/orderlist").data("order_id", order.id).text("Estimated time: ");
       var $inputTime = $("<input>").addClass("time_box").attr("type", "text").attr("name", "estimatedTime").attr("placeholder", "insert minutes").attr("value", estimative);

@@ -25,6 +25,12 @@ const itemsRoutes =  require("./routes/items");
 //const {getOrders} =     require("./routes/orders")(knex);
 
 
+const twilio = require('twilio');
+const accountSid = 'AC54c3c9051aaadd35ed5b77558e27b64c';
+const authToken = 'ebcbcd8f0b14259679ff225c420adb84';
+const client = require('twilio')(accountSid, authToken);
+
+
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
@@ -52,12 +58,12 @@ app.use("/api/items", itemsRoutes(knex));
 
 
 
-const createOrderRow = function(items, userId) {
-  console.log("log from order Row")
+const createOrderRow = function(items, cb) {
   const date = new Date();
   const getTime = date.getTime();
 
-   return knex('orders')
+    // return knex('orders')
+       knex('orders')
       .returning('id')
       .insert({
         status: true,
@@ -65,7 +71,6 @@ const createOrderRow = function(items, userId) {
         estimated_time: null,
         user_id: 1 /*user*/ // change to cookie_session user equivlent
       })
-
       .then((orderId)=>{
         items.forEach(item => {
         knex('orders_items')
@@ -73,8 +78,17 @@ const createOrderRow = function(items, userId) {
             order_id: orderId[0],
             item_id: item.id,
             quantity: item.quantity
-          }).then( (rows) => {
-            return rows;
+          }).then( () => {
+            client.messages.create({
+             body: `A new order was submitted. `,
+             from: '+16043595931',
+             to: '+16044013161'
+             })
+            .then((message) => {
+              console.log(message.sid);
+              cb(orderId[0]);
+            }).done();
+           // res.json(orderId);
           }).catch(function(err) {
              return error;
           })
@@ -165,8 +179,15 @@ app.get("/menu", (req, res) => {
 // });
 
 //Confirmation/status page
-app.get("/confirmation/::id", (req, res) => {
-  res.render("confirmation");
+app.get("/confirmation/:id", (req, res) => {
+  knex.select('*')
+    .from('orders')
+    .where('orders.id', '=', req.params.id)
+    .then((results) => {
+      console.log(results);
+      let templateVars = { order: results};
+       res.render("confirmation", templateVars);
+       });
 });
 
 
@@ -176,19 +197,22 @@ app.post('/checkout_confirmation', (req, res) => {
 
   const checkOutItems = req.body;
   const items = checkOutItems;
+  console.log("items:", items);
+  function goToConfirmation(orderID){
+    res.render("confirmation");
+  };
+  createOrderRow(items, goToConfirmation);
+  //const test = orderPromise.then( () => {
+     // console.log(order, "in order then");
 
-  const orderPromise = createOrderRow(items);
-  const ordersItemsPromise = orderPromise
-    .then( (order) => {
-      console.log(order, "in order then");
-      //////////// undefined
-      res.status(201).json(order);
-      //re direct to confirmation page
-    })
-    .catch(function(error) {
-      console.error(error)
-    })
-})
+      //res.status(201).json(order);
+      //console.log("req: ", req.params);
+
+    // })
+    // .catch(function(error) {
+    //   console.error(error)
+    //  });
+});
 
 
 
