@@ -21,7 +21,7 @@ const knexLogger  = require('knex-logger');
 
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
-
+const itemsRoutes = require('./routes/items');
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
@@ -45,7 +45,7 @@ app.use(express.static("public"));
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));
 //app.use("/api/orders", ordersRoutes(knex)); //CHECK IF THIS IS RIGHT
-//app.use("/api/items", itemsRoutes(knex));   //CHECK IF THIS IS RIGHT
+app.use("/api/items", itemsRoutes(knex));
 
 
 const createOrderRow = function(items, userId) {
@@ -117,15 +117,15 @@ const getOrders = function () {
     // add to most recently created order
 }
 
-const getMenuItems = function () {
-  return knex.select(*)
+/*const getMenuItems = function () {
+  return knex.select('*')
     .from('menu_items')
       .then( (rows) => {
             return rows;
           }).catch(function(err) {
              return error;
           })
-}
+}*/
 
 const getUser = function () {
   return /*const userPromise =*/ knex.select('*').from('users')
@@ -139,18 +139,7 @@ const getUser = function () {
 
 //Menu page
 app.get("/menu", (req, res) => {
-  //
-  // essentially the same as the post down below
-  //
-  //getMenuItems()
-  //.then((menuItems) => {
-    //console.log("menu items: " + menuItems);
-
-
-
-    // send items database object as template vars and loop over on ejs
-    res.render("menu");
-  //});
+  res.render('menu')
 });
 
 
@@ -175,17 +164,16 @@ app.get("/confirmation/::id", (req, res) => {
 // Order list page
 app.get("/orderlist", (req, res) => {
 
-
-
   // get table of orders
   const getOrdersPromise = getOrders();
   // send orders to orderlist
   const ordersPromise = getOrdersPromise
-    ordersPromise.then((order) => {
+    .then((order) => {
       console.log(order)
       const openOrders = {order}
 
       res.render("orderlist", openOrders);
+      // need response status
     })
 
 });

@@ -17,14 +17,14 @@ exports.seed = function(knex, Promise) {
           name: 'Beef',
           price: 18.99,
           description: 'Gains, bruh',
-          urlPath: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuYogafpb8aJhl0x3KFeapPkq5LruedaqaE-Xw65qLd_w9C8s'
+          urlPath: 'https://www.pressurecookingtoday.com/wp-content/uploads/2014/08/Mongolian-Beef-2-Pressure-Cooking-Today.jpg'
         }),
         knex('menu_items').insert({
           id: 3,
           name: 'Fish',
           price: 15.99,
           description: 'Fat sea snakes',
-          urlPath: '"http://assets.kraftfoods.com/recipe_images/opendeploy/189505_640x428.jpg'
+          urlPath: 'http://assets.kraftfoods.com/recipe_images/opendeploy/189505_640x428.jpg'
         }),
         knex('menu_items').insert({
           id: 4,

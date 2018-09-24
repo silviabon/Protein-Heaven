@@ -1,32 +1,93 @@
-let checkOutStaging = [
+let checkOutStaging = [];
 
-];
+
 
 
 $(function() {
+
+  function addClickHandler() {
+      // Add button
+    $('.btn.btn-primary').click( function() {
+      let itemId = $(this).parent().data("id");
+      let itemName = $(this).parent().data("foodName");
+      checkOutStaging.push(itemName);
+      let itemQuantity =  Number($(this).parent().find('option:selected').val());
+      let newCheckOutItem = {id: itemId, name: itemName, quantity: itemQuantity};
+      console.log(newCheckOutItem)
+      // array is empty push
+      if(checkOutStaging.length < 1) {
+
+
+      } else {
+        //loop through array and if item is the same, change item quantity instead of new item
+        let itemAdded;
+        // refactor to be included in other less function
+        // refactor to be included in other less function
+        // refactor to be included in other less function
+        // modifyCheckoutAmmounts(itemId, itemQuantity, true)
+        for (let i = 0; i < checkOutStaging.length; i++) {
+          if (checkOutStaging[i]["id"] === itemId) {
+            checkOutStaging[i]["quantity"] = itemQuantity;
+            itemAdded = true;
+            break;
+          }
+        }
+        // if item neeed to be changed, don't push new item
+        if (!itemAdded) {
+        checkOutStaging.push(newCheckOutItem);
+        }
+        itemAdded = false;
+      }
+      // clear and then populate checkout container
+      $('.checkOutContainer > div').empty();
+      createCheckoutItem();
+    })
+  }
+
+
+  function renderItems (items) {
+
+
+      items.forEach( (item) => {
+
+        $('#menu-container').append(`
+          <div class="card" data-id="${item.id}" data-foodName="${item.name}">
+            <img class="card-img-top" src="${item.urlPath}">
+            <div class="card-body">
+              <h5 class="card-title">${item.name}</h5>
+              <p class="card-text">${item.description}</p>
+              <div class="form-group" data-id="${item.id}">
+                <button type="submit" class="btn btn-primary">Add</button>
+                <label for="exampleFormControlSelect1">Example select</label>
+                <select class="form-control">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          `)
+        })
+
+      addClickHandler();
+    }
+
 
 
 // populate page with images
 
 
+ // array split
+ // then splice
+
+
   //for each item in the array show in checkout
   function createCheckoutItem () {
     //
-    // less button reduces count in array and checkout
-    /*const lessButton = $('<button class="less">').text('-').on('click', function() {
-      console.log("test")
-      let itemId = $(this).parent().data("id");
-      modifyCheckoutAmmounts(itemId, -1, false);
-      console.log(checkOutStaging);
-    })*/
-    // more button reduces count in array and checkout
-    /*const moreButton = $('<button class="more">').text('+').on('click', function() {
-      console.log("test")
-      let itemId = $(this).parent().data("id");
-      modifyCheckoutAmmounts(itemId, 1, false);
-      console.log(checkOutStaging);
-    })*/
-
+    console.log(checkOutStaging)
     checkOutStaging.forEach((item) => {
       $('.checkOutContainer > div').append(`
         <div class="itemRow" data-id="${item['id']}">
@@ -76,42 +137,6 @@ $(function() {
 
   // pull values from menu tiles submit
 
-  // Add button
-  $('.btn.btn-primary').click( function() {
-    let itemId = $(this).parent().data("id");
-    let itemQuantity =  Number($(this).parent().find('option:selected').val());
-    let newCheckOutItem = {id: itemId, quantity: itemQuantity};
-
-    // array is empty push
-    if(checkOutStaging.length < 1) {
-      checkOutStaging.push(newCheckOutItem);
-
-    } else {
-      //loop through array and if item is the same, change item quantity instead of new item
-      let itemAdded;
-      // refactor to be included in other less function
-      // refactor to be included in other less function
-      // refactor to be included in other less function
-      // modifyCheckoutAmmounts(itemId, itemQuantity, true)
-
-      for (let i = 0; i < checkOutStaging.length; i++) {
-        if (checkOutStaging[i]["id"] === itemId) {
-          checkOutStaging[i]["quantity"] = itemQuantity;
-          itemAdded = true;
-          break;
-        }
-      }
-      // if item neeed to be changed, don't push new item
-      if (!itemAdded) {
-      checkOutStaging.push(newCheckOutItem);
-      }
-      itemAdded = false;
-    }
-    // clear and then populate checkout container
-    $('.checkOutContainer > div').empty();
-    createCheckoutItem();
-  })
-
 
 
   // on checkout button click, send objects array to server
@@ -134,13 +159,16 @@ $(function() {
 
    });
 
-
+  $.ajax({method: "GET", url: 'api/items'})
+    .done((items) => {
+      renderItems(items);
+    })
+      //write error catch
 
 });
 
 
 
-// extra undefined
 // think about it dummy
 
 
