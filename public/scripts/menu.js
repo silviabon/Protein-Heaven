@@ -111,20 +111,19 @@ $(function() {
 
   // calucate totals and append to dom
   function calculateTotal() {
-    const salesTax = .05
+    const salesTax = .05;
     let subTotal = 0;
-
 
     checkOutStaging.forEach( (item) => {
       subTotal += item.price * item.quantity;
     })
 
     let calulatedTax = (subTotal * salesTax);
-    let total = (subTotal + salesTax)
+    let total = (subTotal + salesTax);
 
-    $('#subAmmount').text(`$${subTotal.toFixed(2)}`)
-    $('#taxAmmount').text(`$${calulatedTax.toFixed(2)}`)
-    $('#totalAmmount').text(`$${total.toFixed(2)}`)
+    $('#subAmmount').text(`$${subTotal.toFixed(2)}`);
+    $('#taxAmmount').text(`$${calulatedTax.toFixed(2)}`);
+    $('#totalAmmount').text(`$${total.toFixed(2)}`);
   }
 
   // on checkout item minus click, remove one item from count and array

@@ -9,3 +9,17 @@
 //     }
 //   });
 // });
+
+//
+$(function() {
+  // admin button sets login and redirects to proper page
+  $('#admin').click( function(e)  {
+    console.log("test")
+    window.location.href = "/orderlist";
+      return false;
+  })
+})
+
+
+
+
