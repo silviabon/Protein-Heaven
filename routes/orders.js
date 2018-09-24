@@ -3,29 +3,17 @@
 
 const express = require('express');
 const router  = express.Router();
-//const dataHelperMaker = require('../data/data-helpers');
+const moment = require('moment');
 
-// module.exports = (knex) => {
 
-// const dataHelper = dataHelperMaker;
-// const router  = express.Router();
-
-//   router.get("/orderlist", (req, res) => {
-//     dataHelper.getOrders()
-//       .then(orders => {
-//         console.log(json(orders));
-//         res.json(orders);
-//       });
-//   });
-
-//   return router;
-// }
+const twilio = require('twilio');
+const accountSid = 'AC54c3c9051aaadd35ed5b77558e27b64c';
+const authToken = 'ebcbcd8f0b14259679ff225c420adb84';
+const client = require('twilio')(accountSid, authToken);
 
 
 module.exports = (knex) => {
 
-//const dataHelper = dataHelperMaker;
-//const router  = express.Router();
 
   router.get("/", (req, res) => {
     knex.select('orders.id', 'orders.status', 'orders.submit_date', 'orders.estimated_time',
@@ -39,6 +27,46 @@ module.exports = (knex) => {
         res.json(results);
       });
   });
+
+//To update the estimated time when clicking on Submit button of an order in the orderlist page:
+  router.post("/:id", (req, res) => {
+      if (!req.body.time) {
+      res.status(400).json({ error: 'invalid request: no data in POST body'});
+      return;
+      }
+      setTime(req.body.time, req.params.id, insertEstTime);
+
+     // console.log ("dammit:", parseInt(Date.now()) + (parseInt(req.body.time) * 60000));
+
+
+});
+
+function setTime(prepTime, orderId, cb){
+  var estTime = parseInt(Date.now()) + (parseInt(prepTime) * 60000);
+  cb(estTime, prepTime, orderId);
+}
+
+function insertEstTime(estTime, prepTime, orderId){
+  knex('orders')
+    .where('id', '=', orderId)
+    .update({
+    estimated_time: estTime
+    })
+    .then(() => {
+        console.log("preptime: ", prepTime);
+      client.messages.create({
+       body: `Your order will be ready in ${prepTime}!`,
+       to: '+16044013161',
+       from: '+16043595931'
+       })
+      .then((message) => console.log(message.sid))
+      .then(() => {
+        res.status(200);
+      });
+});
+  }
+
+
 
   return router;
 }

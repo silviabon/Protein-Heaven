@@ -1,10 +1,9 @@
 "use strict";
 
 require('dotenv').config();
-//helpers
+
 const moment = require('moment');
-/*const dataHelpers = require('./dataHelpers');*/
-/*const queries = require("../db_queries");*/ // delete?
+
 
 const PORT        = process.env.PORT || 8080;
 const ENV         = process.env.ENV || "development";
@@ -156,34 +155,15 @@ app.get("/confirmation/::id", (req, res) => {
 
 //Order list page
 app.get("/orderlist", (req, res) => {
-
-  //make interval to ajax this the following every second
-
-  // // get table of orders
-  // const getOrdersPromise = getOrders();
-  // // send orders to orderlist
-  // const ordersPromise = getOrdersPromise;
-  //   ordersPromise.then((order) => {
-  //     console.log(order);
-  //     const openOrders = order;
-  //     //console.log("this is the object that is passed:", openOrders);
-      res.render("orderlist");
-  //   });
-
+    res.render("orderlist");
  });
 //make a query every second or so to update the page// set interval *******
 
+app.post('/orderlist',  (req, res) => {
+  res.render("orderlist");
+});
 
-// app.get("/orderlist", (req, res) => {
-//   res.render("orderlist");
-// });
-
-
-// post
-// post
-// post
-
-// upon checkout, create now order an
+// upon checkout, create now order and
 app.post('/checkout_confirmation', (req, res) => {
   // get items object from body
   /*Select

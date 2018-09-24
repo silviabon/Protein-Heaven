@@ -21,7 +21,6 @@ $(document).ready(function() {
             newOrders.push({"id": orders[i].id, "status": orders[i].status, "submit_date": orders[i].submit_date, "estimated_time": orders[i].estimated_time, "name": orders[i].name, "phone_number": orders[i].phone_number, "items": [{"item_id": orders[i].item, "quantity": orders[i].quantity}]});
           }
         }
-        console.log("new orders: ",newOrders);
         for(i in newOrders){
           let $order = createOrderElement(newOrders[i]);
           $('.orders').append($order);
@@ -60,25 +59,28 @@ $(document).ready(function() {
       var $par = $("<p>").text("Items: ");
       var $list = $("<ul>");
 
-
       for (i in order.items){
-        var $item = $("<li>").addClass("item").text(`(${order.items[i].quantity}) - ${order.items[i].item_id}`);
+        var $item = $("<li>").addClass("item").text(`${order.items[i].quantity} - ${order.items[i].item_id}`);
         $list.append($item);
       }
-
-
 
       $items.append($par).append($list);
       $container.append($items);
 
       var $actions = $("<div>").addClass("actions");
       var $deletebox = $("<div>").addClass("deletion_box");
-      var $btn = $("<button>").addClass("delete").text("DELETE");
+      var $btn = $("<button>").addClass("delete").text("COMPLETE");
       $deletebox.append($btn);
 
+      var estimative;
+      if(order.estimated_time){
+        estimative = moment(parseInt(order.estimated_time)).format('hh:mm a');
+      }
+      console.log("estimate time: ", order.estimated_time);
+      console.log("estimate time2: ", moment(parseInt(order.estimated_time)).format('hh:mm a'));
       var $timing = $("<div>").addClass("timing");
-      var $submitTimeForm = $("<form>").addClass("submitEstimatedTime").attr("method", "POST").attr("action", "/orderlist").text("Estimated time: ");
-      var $inputTime = $("<input>").attr("type", "text").attr("name", "estimatedTime").attr("placeholder", "e.g.: 6:00 PM").attr("value", moment(order.estimated_time).format('MMMM Do YYYY, h:mm:ss a'));
+      var $submitTimeForm = $("<form>").addClass("submitEstimatedTime").attr("method", "POST").attr("action", "/orderlist").data("order_id", order.id).text("Estimated time: ");
+      var $inputTime = $("<input>").addClass("time_box").attr("type", "text").attr("name", "estimatedTime").attr("placeholder", "insert minutes").attr("value", estimative);
       var $submitButton = $("<input>").addClass("submit_button").attr("type", "submit").attr("value", "Submit");
       $submitTimeForm.append($inputTime).append($inputTime).append($submitButton);
       $timing.append($submitTimeForm);
@@ -93,21 +95,36 @@ $(document).ready(function() {
 
     //loads the orders in the page
     function loadOrders(){
-      //$.ajax('orderlist', { method: 'GET' })
       $.ajax({method: "GET", url: "/api/orders"})
       .done((openOrders) => {
-        console.log("inside loadOrders: ", openOrders);
         renderOrders(openOrders);
       });
   };
 
+//Update the estimated time when clicking on submit button of an order:
+$('.orders').on('submit', '.submitEstimatedTime', function(e) {
+    e.preventDefault();
+    var target = $(e.target);
+    // console.log("testing: ", target.data("order_id")); // getting order id
+    // console.log("testing2: ", target.find(".time_box").val()); // getting order id
 
-    //   $.ajax('orderlist', openOrders)
-    //     .then(function (openOrders) {
-    //      console.log("inside loadOrders: ", openOrders);
-    //       renderOrders(openOrders);
-    //   });
-    // }
+
+    if(target.find(".time_box").val() === '' || target.find(".time_box").val() === undefined){
+      console.log("insert an estimated time in the box");
+    }else {
+      // 1. Grab the content of the form
+      let formData = {"time": target.find(".time_box").val()};
+      // 2. Submit using ajax
+       $.ajax({ method: 'POST', url: "/api/orders/" + target.data("order_id"), data: formData})
+       .then(function() {
+        // 4. Make sure the new product show up in the product list
+        return $.ajax('/orderlist');
+      }).then(loadOrders());
+  }
+
+   });
+
+
 
   loadOrders(); //implement when db is connected
   //renderOrders(order);
