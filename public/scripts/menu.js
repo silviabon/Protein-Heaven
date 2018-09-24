@@ -159,10 +159,11 @@ $(function() {
         contentType: 'application/json',
         data: test
       })
-        .then(function () {
-          checkOutStaging = [];
-          //clear all chilcren out of checkout
-          $('.checkOutContainer #menuItems').empty();
+        .then(function (data) {
+          window.location = "/confirmation/" + data.orderID
+          // checkOutStaging = [];
+          // //clear all chilcren out of checkout
+          // $('.checkOutContainer #menuItems').empty();
         });
 
    });

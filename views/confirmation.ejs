@@ -19,11 +19,12 @@
 
         <% if( order[0].estimated_time === null){
           %>Please wait for SMS.
-          <%}else{ %>
+          <%} else{ %>
        <!--   moment(parseInt(order[0].estimated_time)).format('hh:mm a') -->
        Your order will be ready at
           <%= order[0].estimated_time%>
           <%}%>
+        </span>
 
 
 

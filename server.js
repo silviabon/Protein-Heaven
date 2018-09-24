@@ -186,6 +186,7 @@ app.get("/confirmation/:id", (req, res) => {
     .then((results) => {
       console.log(results);
       let templateVars = { order: results};
+      console.log("template vars: ", templateVars)
        res.render("confirmation", templateVars);
        });
 });
@@ -198,10 +199,13 @@ app.post('/checkout_confirmation', (req, res) => {
   const checkOutItems = req.body;
   const items = checkOutItems;
   console.log("items:", items);
-  function goToConfirmation(orderID){
-    res.render("confirmation");
-  };
+
   createOrderRow(items, goToConfirmation);
+
+  function goToConfirmation(orderID){
+    console.log("roisgbiualrgbiursgbiurgb", orderID)
+    res.json({orderID: orderID});
+  };
   //const test = orderPromise.then( () => {
      // console.log(order, "in order then");
 
