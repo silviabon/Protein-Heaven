@@ -219,8 +219,6 @@ app.post('/checkout_confirmation', (req, res) => {
 });
 
 
-
-
 //Order list page
 app.get("/orderlist", (req, res) => {
     res.render("orderlist");
@@ -230,8 +228,6 @@ app.get("/orderlist", (req, res) => {
 app.post('/orderlist',  (req, res) => {
   res.render("orderlist");
 });
-
-
 
 
 app.listen(PORT, () => {

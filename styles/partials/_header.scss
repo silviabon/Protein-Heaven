@@ -1,18 +1,23 @@
 #header {
+  color:white;
   height:60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  // background-color: #000;
+  background-color: black;
+  opacity:0.65;
+
 
   h1{
     font-size: 2em;
     display:inline;
     margin: .35em 1em .35em 1em;
+    color:white;
   }
   h2 {
     font-size: 1.5em;
     display:inline;
+    color:white;
 
   }
 
@@ -23,14 +28,11 @@
     height: 2em;
     margin: 1em 1em;
   }
-  #user{
-    display:inline;
-    margin: 1em 0;
 
-  }
   #admin{
     display:inline;
     margin: 1em 1em;
+    background-color:saddlebrown;
   }
 }
 

@@ -57,7 +57,6 @@ $(function() {
               <p class="card-text">${item.description}</p>
               <div class="form-group" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}"">
                 <button type="submit" class="btn btn-primary">Add</button>
-                <label for="exampleFormControlSelect1">Example select</label>
                 <select class="form-control">
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -78,9 +77,9 @@ $(function() {
     checkOutStaging.forEach((item) => {
       $('.checkOutContainer #menuItems').append(`
         <div class="itemRow" data-id="${item['id']}">
-            <p>${item['name']}</p>
-            <p>${item['quantity']}</p>
-            <p>${item['price']}</p>
+            <p id="name1">${item['name']}</p>
+            <p id="quantity1">QT:  ${item['quantity']}</p>
+            <p id="price1">${item['price']}</p>
         </div>
         `)
 
@@ -111,20 +110,19 @@ $(function() {
 
   // calucate totals and append to dom
   function calculateTotal() {
-    const salesTax = .05
+    const salesTax = .05;
     let subTotal = 0;
-
 
     checkOutStaging.forEach( (item) => {
       subTotal += item.price * item.quantity;
     })
 
     let calulatedTax = (subTotal * salesTax);
-    let total = (subTotal + salesTax)
+    let total = (subTotal + salesTax);
 
-    $('#subAmmount').text(`$${subTotal.toFixed(2)}`)
-    $('#taxAmmount').text(`$${calulatedTax.toFixed(2)}`)
-    $('#totalAmmount').text(`$${total.toFixed(2)}`)
+    $('#subAmmount').text(`$${subTotal.toFixed(2)}`);
+    $('#taxAmmount').text(`$${calulatedTax.toFixed(2)}`);
+    $('#totalAmmount').text(`$${total.toFixed(2)}`);
   }
 
   // on checkout item minus click, remove one item from count and array
