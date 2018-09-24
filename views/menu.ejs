@@ -1,89 +1,108 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-    <%- include ./partials/_head %>
-</head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="./food_pickup/public/styles/layout.css">
 
-<body background ="http://static3.uk.businessinsider.com/image/598b2ef527fa6b53bc4639ce-1281/end-grain-cutting-board.jpg" class="backgroundImg">
-  <header>
-    <h2>MENU</h2>
-  </header>
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" ></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="/scripts/menu.js"></script>
 
-<div id="mainContainer">
 
-<div class="form-group">
-    <label for="exampleFormControlTextarea1">Example textarea</label>
-    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-    <button type="button" id="checkoutBtn" class="btn btn-warning">Checkout</button>
-  </div>
+    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/index.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/cover.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/bootstrap.css" type="text/css" />
+    
 
-  <div>
+    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+    <script type="text/javascript" src="/scripts/app.js"></script>
 
-  <div id="menu-container">
-      <div class="card-deck row">
-          <div class="card">
-            <img class="card-img-top" src="https://assets.marthastewart.com/styles/wmax-750/d28/perfect-roast-chicken-a97053/perfect-roast-chicken-a97053_horiz.jpg?itok=DBas50Si" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Chicken</h5>
-              <p class="card-text">some juicy thing</p>
-              <div class="form-group" data-id="1">
-                <button type="submit" class="btn btn-primary">Add</button>
-                <label for="exampleFormControlSelect1">Example select</label>
-                <select class="form-control">
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
+<div class="container-fluid row">
+
+
+    <button type="button" class="btn btn-warning">Checkout</button>
+
+  </head>
+<br/>
+<body background ="http://static3.uk.businessinsider.com/image/598b2ef527fa6b53bc4639ce-1281/end-grain-cutting-board.jpg" class="backgroundImg"></body>
+<div id="menu-container">
+    <br/>
+    <br/>
+    <div class="card-deck row">
+        <div class="card">
+          <img class="card-img-top" src="https://assets.marthastewart.com/styles/wmax-750/d28/perfect-roast-chicken-a97053/perfect-roast-chicken-a97053_horiz.jpg?itok=DBas50Si" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Chicken</h5>
+            <p class="card-text">Some juicy thing</p>
+            <a href="#" class="btn btn-primary">Add</a>
+            <br/>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">How many?</label>
+                <select class="form-control" id="exampleFormControlSelect1">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
                 </select>
               </div>
-            </div>
-          </div>
-          <div class="card">
-            <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuYogafpb8aJhl0x3KFeapPkq5LruedaqaE-Xw65qLd_w9C8sl" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Beef</h5>
-              <p class="card-text">well done or blue rare?</p>
-              <div class="form-group" data-id="2">
-                <button type="submit" class="btn btn-primary">Add</button>
-                <label for="exampleFormControlSelect1">Example select</label>
-                <select class="form-control">
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="card">
-            <img class="card-img-top" src="http://assets.kraftfoods.com/recipe_images/opendeploy/189505_640x428.jpg" alt="Card image cap">
-            <div class="card-body">
-              <h5 class="card-title">Fish</h5>
-              <p class="card-text">some floppy thing</p>
-              <div class="form-group" data-id="3">
-                  <button type="submit" class="btn btn-primary" >Add</button>
-                  <label for="exampleFormControlSelect1">Example select</label>
-                  <select class="form-control">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                  </select>
-              </div>
-            </div>
           </div>
         </div>
-  </div>
-  </div>
+        <div class="card">
+          <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuYogafpb8aJhl0x3KFeapPkq5LruedaqaE-Xw65qLd_w9C8sl" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Beef</h5>
+            <p class="card-text">Well done or blue rare?</p>
+            <a href="#" class="btn btn-primary">Add</a>
+            <br/>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">How many?</label>
+                <select class="form-control" id="exampleFormControlSelect1">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+          </div>
+        </div>
+        <div class="card">
+          <img class="card-img-top" src="http://assets.kraftfoods.com/recipe_images/opendeploy/189505_640x428.jpg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Fish</h5>
+            <p class="card-text">Some floppy thing</p>
+            <a href="#" class="btn btn-primary">Add</a>
+            <br/>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">How many?</label>
+                <select class="form-control" id="exampleFormControlSelect1">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+          </div>
+        </div>
+      </div>
 </div>
-</body>
-</html>
+</div>
 
-<form action="/" method="POST" data-test="passed">
-    <input type="text" name="in1" value="valuable" />
-    <input type="submit" />
-</form>
-</body>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../../assets/js/vendor/popper.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+  </body>
+</html>

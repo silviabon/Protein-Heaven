@@ -1,9 +1,12 @@
+
+
 html {
   box-sizing: border-box;
   *, *:before, *:after {
     box-sizing: inherit;
   }
 }
+
 // .img {
 //   opacity: 0.65;
 //   height: 100%;
@@ -17,6 +20,7 @@ html {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
 .order_kitchen{
   border-style: solid;
   border-width: 1px;
@@ -27,6 +31,7 @@ html {
   margin-bottom: 2em;
   border-radius: 10px;
   background-color: antiquewhite;
+
   header{
     display: flex;
     background-color: burlywood;
@@ -41,20 +46,24 @@ html {
       flex-grow:1;
       border-width: 1px;
     }
+
     .phone_box{
       flex-grow:1;
       border-width: 1px;
     }
+
     .order_number_box{
       flex-grow:1;
       text-align: right;
       border-width: 1px;
     }
   }
+
   .container{
     display: flex;
     border-width: 1px;
     border-color: #C0C0C0;
+
     .items{
       display: flex;
       padding: 1em;
@@ -62,31 +71,36 @@ html {
       border-color: #C0C0C0;
       width: 70%;
     }
+
     .actions{
       padding: 1em;
       border-width: 1px;
       border-color: #C0C0C0;
       text-align: right;
+
       .deletion_box{
         border-width: 1px;
         border-color: #C0C0C0;
         text-align: right;
         margin-bottom: 1em;
       }
+
       .timing{
         padding: 1em;
         border-style: solid;
         border-width: 1px;
         border-color: #C0C0C0;
         text-align: right;
+
       }
     }
   }
+
   footer{
       border-width: 1px;
-      border-color: #C0C0C0;
       padding: 1em;
     }
+
 .order_counting{
   border-style: solid;
     border-width: 1px;
@@ -94,19 +108,23 @@ html {
     text-align: right;
     padding-right: 2em;
 }
+
 .title {
-  color: burlywood;
+  color: black;
   padding-left: 1em;
-  padding-top: 1em
+  padding-top: 1em;
+  margin-bottom: 2em;
 }
 
-.submit_button {
+input.btn.btn-submit {
   margin-top: 1em;
+  
 }
 
 input[type="text"] {
   border-radius: 5px;
 }
 
-
-
+.bottom {
+  background: burlywood
+}

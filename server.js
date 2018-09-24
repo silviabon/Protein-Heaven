@@ -1,10 +1,9 @@
 "use strict";
 
 require('dotenv').config();
-//helpers
+
 const moment = require('moment');
-/*const dataHelpers = require('./dataHelpers');*/
-/*const queries = require("../db_queries");*/ // delete?
+
 
 var twilio = require('twilio');
 
@@ -159,28 +158,13 @@ app.get("/confirmation/::id", (req, res) => {
 
 //Order list page
 app.get("/orderlist", (req, res) => {
-
-  //make interval to ajax this the following every second
-
-  // // get table of orders
-  // const getOrdersPromise = getOrders();
-  // // send orders to orderlist
-  // const ordersPromise = getOrdersPromise;
-  //   ordersPromise.then((order) => {
-  //     console.log(order);
-  //     const openOrders = order;
-  //     //console.log("this is the object that is passed:", openOrders);
-      res.render("orderlist");
-  //   });
-
+    res.render("orderlist");
  });
 //make a query every second or so to update the page// set interval *******
 
-
-// app.get("/orderlist", (req, res) => {
-//   res.render("orderlist");
-// });
-
+app.post('/orderlist',  (req, res) => {
+  res.render("orderlist");
+});
 
 app.post('/checkout_confirmation', (req, res) => {
   const items = [
