@@ -105,7 +105,7 @@ const getOrders = function () {
     .where('users.access_level', '=', 2 ).andWhere('orders.status', '=', true)
     /*.then()*/
     // add to most recently created order
-
+}
 
 /*const getMenuItems = function () {
   return knex.select('*')
@@ -141,12 +141,11 @@ app.get("/confirmation/:id", (req, res) => {
     .from('orders')
     .where('orders.id', '=', req.params.id)
     .then((results) => {
-      console.log(results);
       let templateVars = { order: results, moment: moment};
-      console.log("template vars: ", templateVars)
        res.render("confirmation", templateVars);
        });
 });
+
 app.post('/checkout_confirmation', (req, res) => {
   // get items object from body
   const checkOutItems = req.body;
@@ -156,7 +155,6 @@ app.post('/checkout_confirmation', (req, res) => {
   createOrderRow(items, goToConfirmation);
 
   function goToConfirmation(orderID){
-    console.log("roisgbiualrgbiursgbiurgb", orderID)
     res.json({orderID: orderID});
   };
 
@@ -167,7 +165,7 @@ app.post('/checkout_confirmation', (req, res) => {
 app.get("/orderlist", (req, res) => {
     res.render("orderlist");
  });
-//make a query every second or so to update the page// set interval *******
+
 
 app.post('/orderlist',  (req, res) => {
   res.render("orderlist");
