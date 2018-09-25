@@ -148,10 +148,8 @@ $(function() {
   // on checkout button click, send objects array to server
    $('#checkoutBtn').on('click', function () {
     console.log('Button clicked, performing ajax call...');
-
     var test = JSON.stringify(checkOutStaging)
     console.log(checkOutStaging)
-
     $.ajax('/checkout_confirmation', {
         method: 'POST',
         contentType: 'application/json',
@@ -163,13 +161,13 @@ $(function() {
           // //clear all chilcren out of checkout
           // $('.checkOutContainer #menuItems').empty();
         });
-
    });
-
   $.ajax({method: "GET", url: 'api/items'})
     .done((items) => {
       renderItems(items);
     })
       //write error catch
-
 });
+
+
+

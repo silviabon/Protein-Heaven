@@ -30,7 +30,6 @@ const accountSid = 'AC54c3c9051aaadd35ed5b77558e27b64c';
 const authToken = 'ebcbcd8f0b14259679ff225c420adb84';
 const client = require('twilio')(accountSid, authToken);
 
-
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
@@ -92,39 +91,10 @@ const createOrderRow = function(items, cb) {
           }).catch(function(err) {
              return error;
           })
-
-
       })
-
   })
 }
 
-
-/*const createOrderFromItems = function(items, user) {
-
-  const orderPromise = createOrderRow();
-  const orderItems = orderPromise
-    .then( (order) => {
-      console.log("ORDER WAS CREATED ",order)
-      //first send to get page
-      createOrderItems(order.id, items)
-      console.log("after order items");
-    })
-  }*/
-
-/*const createOrderItems = function(orderId, items) {
-  console.log("from createOrderItems")
-  items.forEach(item => {
-    knex('orders_items')
-      .insert({
-        order_id: orderId,
-        item_id: item.id,
-        quantity: item.quantity
->>>>>>> master
-      })
-
-  })
-}
 
 const getOrders = function () {
   return knex.select('orders.id', 'orders.status', 'orders.submit_date', 'orders.estimated_time',
@@ -165,19 +135,6 @@ app.get("/menu", (req, res) => {
 });
 
 
-
-
-// //submit order and go to confirmation page
-// app.post("/menu", (req, res) => {
-//   if(data){
-//   //?? how to send this to database? ?????????
-//   let id = req.session.order_id;
-//   res.render("orderlist/::id/confirmation");
-//   }else{
-//     res.status(400).send("Error: ");
-//   }
-// });
-
 //Confirmation/status page
 app.get("/confirmation/:id", (req, res) => {
   knex.select('*')
@@ -190,12 +147,8 @@ app.get("/confirmation/:id", (req, res) => {
        res.render("confirmation", templateVars);
        });
 });
-
-
 app.post('/checkout_confirmation', (req, res) => {
-
   // get items object from body
-
   const checkOutItems = req.body;
   const items = checkOutItems;
   console.log("items:", items);
@@ -206,17 +159,8 @@ app.post('/checkout_confirmation', (req, res) => {
     console.log("roisgbiualrgbiursgbiurgb", orderID)
     res.json({orderID: orderID});
   };
-  //const test = orderPromise.then( () => {
-     // console.log(order, "in order then");
 
-      //res.status(201).json(order);
-      //console.log("req: ", req.params);
-
-    // })
-    // .catch(function(error) {
-    //   console.error(error)
-    //  });
-});
+})
 
 
 //Order list page
