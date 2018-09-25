@@ -148,27 +148,26 @@ $(function() {
   // on checkout button click, send objects array to server
    $('#checkoutBtn').on('click', function () {
     console.log('Button clicked, performing ajax call...');
-
     var test = JSON.stringify(checkOutStaging)
     console.log(checkOutStaging)
-
     $.ajax('/checkout_confirmation', {
         method: 'POST',
         contentType: 'application/json',
         data: test
       })
-        .then(function () {
-          checkOutStaging = [];
-          //clear all chilcren out of checkout
-          $('.checkOutContainer #menuItems').empty();
+        .then(function (data) {
+          window.location = "/confirmation/" + data.orderID
+          // checkOutStaging = [];
+          // //clear all chilcren out of checkout
+          // $('.checkOutContainer #menuItems').empty();
         });
-
    });
-
   $.ajax({method: "GET", url: 'api/items'})
     .done((items) => {
       renderItems(items);
     })
       //write error catch
-
 });
+
+
+
