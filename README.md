@@ -17,4 +17,4 @@ Restaurant admins will also recieve a SMS to alert that a new order is in the sy
 -node-sass-middleware: 0.9.8
 -pg: 6.0.2
 -startbootstrap-shop-homepage: 4.1.1
--twilio:^3.20.
+-twilio: 3.20.
