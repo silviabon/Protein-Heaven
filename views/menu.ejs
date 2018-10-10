@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-
+  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -17,19 +17,15 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="/scripts/menu.js"></script>
   <script type="text/javascript" src="/scripts/app.js"></script>
-
-
+    
+</head>
+<body>
+    <%- include ./partials/_head %>
 <div id="mainContainer">
 
   <div class="checkOutContainer">
     <div id="menuItems">
-      <!-- <div class="itemRow" data-id="1">
-        <p>chicken</p>
-        <p>3</p>
-        <button class="less">-</button>
-        <button class="more">+</button>
-      </div> -->
-
+     
     </div>
     <div id="totals">
       <div id="subTotal">
@@ -54,8 +50,3 @@
 </body>
 
 </html>
-
-<!-- <form action="/" method="POST" data-test="passed">
-    <input type="text" name="in1" value="valuable" />
-    <input type="submit" />
-</form> -->
