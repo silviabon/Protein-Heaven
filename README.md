@@ -1,6 +1,6 @@
-## Protein-Heaver
-A food pick-up service. Customers select their items, and upon checkout. Recieve a SMS confirmation the order was recieved.
-Restaurant admins will also recieve a SMS to alert that a new order is in the system. In the admin portal. Orders can be set with an estimated time for pickup. Which will send another message to the customer. 
+## Protein-Heaven
+A food pick-up service. Customers select their items, and recieve a SMS with the confirmation that the order was recieved.
+Restaurant admins will also recieve a SMS to alert that a new order is in the system. In the admin portal, orders can be set with an estimated time for pickup, which will send another message to the customer. 
 
 
 
