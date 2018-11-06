@@ -1,5 +1,5 @@
 ## Protein-Heaven
-A food pick-up service project for web dev bootcamp midterm.  Customers select their items, and recieve a SMS with the confirmation that the order was recieved.
+A food pick-up service project for web dev bootcamp midterm.  Customers select their items, and receive a SMS with the confirmation that the order was recieved.
 Restaurant admins will also recieve a SMS to alert that a new order is in the system. In the admin portal, orders can be set with an estimated time for pickup, which will send another message to the customer. 
 
 ## Screen-shots
